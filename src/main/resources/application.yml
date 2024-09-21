@@ -1,0 +1,22 @@
+# Server configuration
+server:
+  port: 8088
+  # servlet:
+  #  context-path: /api/v1
+
+api:
+  prefix: /api/v1
+# Datasource configuration
+spring:
+  datasource:
+    url: jdbc:mariadb://100.122.107.71:5000/iAcademy
+    username: root
+    password: root
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
