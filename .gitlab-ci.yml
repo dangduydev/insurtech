@@ -26,7 +26,7 @@ deploy:
     when: manual
     script:
         - >
-            if ["$GITLAB_USER_LOGIN" = 'duycd']; then
+            if [ "$GITLAB_USER_LOGIN" == 'duycd' ]; then
                 sudo cp target/$projectname-$version.jar $projectpath
                 sudo chown -R $projectuser. $projectpath
                 sudo kill -9 $(ps -ef| grep $projectname-$version.jar | grep -v grep | awk '{print $2}') || true
