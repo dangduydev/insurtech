@@ -1,8 +1,8 @@
 variables:
-    - projectname: insurtech
-    - version: 0.0.1-SNAPSHOT
-    - projectuser: insurtech 
-    - projectpath: /datas/insurtech/
+    projectname: insurtech
+    version: 0.0.1-SNAPSHOT
+    projectuser: insurtech 
+    projectpath: /datas/insurtech/
 
 stages:
     - build
