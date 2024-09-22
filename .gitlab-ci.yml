@@ -24,7 +24,7 @@ deploy:
     script:
         - sudo cp target/$projectname-$version.jar $projectpath
         - sudo chown -R $projectuser. $projectpath
-        - sudo kill -9 $(ps -ef| grep $projectname-$version.jar | grep -v grep | awk '{print $2}')
+        - sudo kill -9 $(ps -ef| grep $projectname-$version.jar | grep -v grep | awk '{print $2}') || true
         - sudo su $projectuser -c "cd $projectpath; nohup java -jar $projectname-$version.jar > nohup.out 2>&1 &"
     tags:
         - duycaodang-server
