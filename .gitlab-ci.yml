@@ -17,6 +17,8 @@ build:
         - mvn install -DskipTests=true
     tags:
         - duycaodang-server
+    only:
+        - tags
 deploy:
     stage: deploy
     variables:
@@ -28,4 +30,6 @@ deploy:
         - sudo su $projectuser -c "cd $projectpath; nohup java -jar $projectname-$version.jar > nohup.out 2>&1 &"
     tags:
         - duycaodang-server
+    only:
+        - tags
 
