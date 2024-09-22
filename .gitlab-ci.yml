@@ -1,3 +1,9 @@
+variables:
+    - projectname: insurtech
+    - version: 0.0.1-SNAPSHOT
+    - projectuser: insurtech 
+    - projectpath: /datas/insurtech/
+
 stages:
     - build
     - deploy
@@ -16,12 +22,10 @@ deploy:
     variables:
         GIT_STRATEGY: none
     script:
-        - echo "Running deploy stage"
-        - ls -l
-        - whoami
-        - sudo cp target/insurtech-0.0.1-SNAPSHOT.jar /datas/insurtech
-        - sudo chown insurtech. /datas/insurtech
-        - sudo su insurtech -c "cd /datas/insurtech/; nohup java -jar insurtech-0.0.1-SNAPSHOT.jar 2>&1 &"
+        - sudo cp target/$projectname-$version.jar $projectpath
+        - sudo chown $projectuser. $projectpath
+        - sudo $projectuser -c "kill -9 $(ps -ef| grep $projectname-$version.jar | grep -v grep | awk '{print $2}')"
+        - sudo su $projectuser -c "cd $projectpath; nohup java -jar $projectname-$version.jar 2>&1 &"
     tags:
         - duycaodang-server
 
