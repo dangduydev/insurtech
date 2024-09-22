@@ -18,6 +18,7 @@ deploy:
     script:
         - echo "Running deploy stage"
         - ls -l
+        - whoami
         - sudo cp target/insurtech-0.0.1-SNAPSHOT.jar /datas/insurtech
         - sudo chown insurtech. /datas/insurtech
         - sudo su insurtech -c "cd /datas/insurtech/; nohup java -jar insurtech-0.0.1-SNAPSHOT.jar 2>&1 &"
