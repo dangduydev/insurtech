@@ -9,3 +9,10 @@ build:
         - mvn install -DskipTests=true
     tags:
         - duycaodang-server
+deploy:
+    stage: deploy
+    script:
+        - java -jar target/insurtech-0.0.1-SNAPSHOT.jar
+    tags:
+        - duycaodang-server
+
