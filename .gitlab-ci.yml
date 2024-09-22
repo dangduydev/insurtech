@@ -2,7 +2,7 @@ variables:
     projectname: insurtech
     version: 0.0.1-SNAPSHOT
     projectuser: insurtech 
-    projectpath: /datas/insurtech/
+    projectpath: /datas/insurtech
 
 stages:
     - build
@@ -23,7 +23,7 @@ deploy:
         GIT_STRATEGY: none
     script:
         - sudo cp target/$projectname-$version.jar $projectpath
-        - sudo chown -R $projectuser. $projectpath
+        - sudo chown $projectuser. $projectpath
         - sudo $projectuser -c "kill -9 $(ps -ef| grep $projectname-$version.jar | grep -v grep | awk '{print $2}')"
         - sudo su $projectuser -c "cd $projectpath; nohup java -jar $projectname-$version.jar > nohup.out 2>&1 &"
     tags:
