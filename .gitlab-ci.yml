@@ -6,8 +6,6 @@ stages:
 build:
     stage: build
     script:
-        - whoami
-        - pwd
-        - ls
+        - mvn install -DskipTests=true
     tags:
         - duycaodang-server
