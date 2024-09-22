@@ -5,12 +5,16 @@ stages:
 
 build:
     stage: build
+    variables:
+        GIT_STRATEGY: clone
     script:
         - mvn install -DskipTests=true
     tags:
         - duycaodang-server
 deploy:
     stage: deploy
+    variables:
+        GIT_STRATEGY: none
     script:
         - java -jar target/insurtech-0.0.1-SNAPSHOT.jar
     tags:
