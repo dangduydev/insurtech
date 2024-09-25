@@ -9,7 +9,7 @@ api:
 # Datasource configuration
 spring:
   datasource:
-    url: jdbc:mariadb://100.122.107.71:5000/iAcademy
+    url: jdbc:mariadb://100.102.83.94:3306/insurtech-mariadb
     username: root
     password: root
     driver-class-name: org.mariadb.jdbc.Driver
