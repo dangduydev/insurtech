@@ -11,7 +11,7 @@ spring:
   datasource:
     url: jdbc:mariadb://100.102.83.94:3306/insurtech-mariadb
     username: root
-    password: root
+    password: insurtech
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
