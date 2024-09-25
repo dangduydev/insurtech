@@ -17,8 +17,8 @@ build:
         - mvn install -DskipTests=true
     tags:
         - duycaodang-server
-    only:
-        - tags
+    # only:
+    #     - tags
 deploy:
     stage: deploy
     variables:
@@ -37,8 +37,8 @@ deploy:
             # fi
     tags:
         - duycaodang-server
-    only:
-        - tags
+    # only:
+    #     - tags
 
 showlog:
     stage: showlog
@@ -49,6 +49,6 @@ showlog:
         - sudo su $projectuser -c "cd $projectpath; tail -n 10000 nohup.out"
     tags:
         - duycaodang-server
-    only:
-        - tags
+    # only:
+    #     - tags
 
