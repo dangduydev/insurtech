@@ -62,7 +62,7 @@ public class CourseController {
         
         return ResponseEntity.ok(
                 ResponseObject.builder()
-                        .message("DS Khoa hoc")
+                        .message("DS Khoa hoc123")
                         .status(HttpStatus.OK)
                         .data(coursePage)
                         .build()
