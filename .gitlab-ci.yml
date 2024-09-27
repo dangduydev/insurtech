@@ -20,26 +20,25 @@ build:
   # only:
   #     - tags
 deploy:
-    stage: deploy
-    variables:
-      GIT_STRATEGY: none
-    # when: manual
-    script:
-      # - >
-      # if [ "$GITLAB_USER_LOGIN" == 'duycd' ]; then
-      sudo cp target/$projectname-$version.jar $projectpath
-      sudo chown -R $projectuser. $projectpath
-      ls -l $projectpath
-      sudo kill -9 $(ps -ef| grep $projectname-$version.jar | grep -v grep | awk '{print $2}') || true
-      sudo su $projectuser -c "cd $projectpath; nohup java -jar $projectname-$version.jar > nohup.out 2>&1 &"
-      # else
-      # echo "Permission denied"
-      # exit 1
-    # fi
-    tags:
-      - duycaodang-server
-    # only:
-    #     - tags
+  stage: deploy
+  variables:
+    GIT_STRATEGY: none
+  # when: manual
+  script:
+    # - >
+    # if [ "$GITLAB_USER_LOGIN" == 'duycd' ]; then
+    - sudo cp target/$projectname-$version.jar $projectpath
+    - sudo chown -R $projectuser. $projectpath
+    - sudo kill -9 $(ps -ef| grep $projectname-$version.jar | grep -v grep | awk '{print $2}') || true
+    - sudo su $projectuser -c "cd $projectpath; nohup java -jar $projectname-$version.jar > nohup.out 2>&1 &"
+    # else
+    # echo "Permission denied"
+    # exit 1
+  # fi
+  tags:
+    - duycaodang-server
+  # only:
+  #     - tags
 
 showlog:
   stage: showlog
