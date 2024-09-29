@@ -40,6 +40,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                                     @NotNull FilterChain filterChain
     ) throws ServletException, IOException {
         try {
+            if (isBypassToken(request)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
             final String authHeader = request.getHeader("Authorization");
             if (authHeader != null || authHeader.startsWith("Bearer ")) {
                 final String token = authHeader.substring(7);
@@ -58,7 +62,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
         } catch (Exception e) {
-            logger.error("Error filtering request {}", e);
+            logger.error("Error filtering request");
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
         }
         if (isBypassToken(request)) {

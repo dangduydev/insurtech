@@ -14,8 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,7 +30,7 @@ public class JwtTokenUtil {
     private Long expiration; //save to an environment variable
 
     @Value("${jwt.secretKey}")
-    private String secretKeyPath;
+    private String secretKey;
 
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
@@ -51,7 +49,6 @@ public class JwtTokenUtil {
     }
 
     private Key getSigningKey() throws IOException {
-        String secretKey = new String(Files.readAllBytes(Paths.get(secretKeyPath)));;
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
