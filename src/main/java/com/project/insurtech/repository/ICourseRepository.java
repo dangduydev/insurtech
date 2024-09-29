@@ -1,6 +1,6 @@
-package com.project.insurtech.repository.course;
+package com.project.insurtech.repository;
 
-import com.project.insurtech.model.Course;
+import com.project.insurtech.entities.Course;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

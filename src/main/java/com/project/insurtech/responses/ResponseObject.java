@@ -1,4 +1,4 @@
-package com.project.insurtech.dto.response;
+package com.project.insurtech.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

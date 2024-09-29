@@ -1,4 +1,4 @@
-package com.project.insurtech.model;
+package com.project.insurtech.entities;
 
 import jakarta.persistence.Column;
 
@@ -24,18 +24,18 @@ public class BaseEntity{
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @Column(name = "modified_at")
+    private LocalDateTime modifiedAt;
 
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
+        modifiedAt = LocalDateTime.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        modifiedAt = LocalDateTime.now();
     }
 
 }

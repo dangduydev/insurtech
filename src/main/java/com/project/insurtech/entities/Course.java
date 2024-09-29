@@ -1,4 +1,4 @@
-package com.project.insurtech.model;
+package com.project.insurtech.entities;
 
 import jakarta.persistence.Column;
 
