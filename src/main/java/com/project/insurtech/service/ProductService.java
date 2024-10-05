@@ -3,7 +3,7 @@ package com.project.insurtech.service;
 import com.project.insurtech.dtos.ProductDTO;
 import com.project.insurtech.entities.Product;
 import com.project.insurtech.enums.IsDeletedEnum;
-import com.project.insurtech.exceptions.DataNotFoundException; 
+import com.project.insurtech.exceptions.DataNotFoundException; // Create this exception class
 import com.project.insurtech.components.mappers.ProductMapper;
 import com.project.insurtech.repositories.IProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class ProductService implements IProductService {
     @Override
     public void createProduct(ProductDTO productDTO) throws Exception {
         try {
-            Product product = productMapper.fromDTOtoEntity(productDTO); 
+            Product product = productMapper.fromDTOtoEntity(productDTO); // Use the mapper
             product.setIsDeleted(IsDeletedEnum.NOT_DELETED.getValue());
             productRepository.save(product);
         } catch (Exception e) {
@@ -47,21 +47,16 @@ public class ProductService implements IProductService {
     public Product updateProduct(Long id, ProductDTO productDTO) throws DataNotFoundException {
         Optional<Product> optionalProduct = productRepository.findById(id);
         Product product = optionalProduct.orElseThrow(() -> new DataNotFoundException("Product not found with id: " + id));
-
-        // Map the DTO data to the Product entity
-        product.setName(productDTO.getName());
-        product.setDescription(productDTO.getDescription());
-        // ... map other fields ...
-
-        product.setModifiedAt(LocalDateTime.now()); 
-        return productRepository.save(product); 
+//        productMapper.updateEntityFromDto(product, productDTO); // Update using the mapper
+        product.setModifiedAt(LocalDateTime.now());
+        return productRepository.save(product);
     }
 
     @Override
     public void deleteProduct(Long id) throws DataNotFoundException {
         Optional<Product> optionalProduct = productRepository.findById(id);
         Product product = optionalProduct.orElseThrow(() -> new DataNotFoundException("Product not found with id: " + id));
-        product.setIsDeleted(IsDeletedEnum.DELETED.getValue()); 
+        product.setIsDeleted(IsDeletedEnum.DELETED.getValue()); // Or use a more sophisticated soft-delete mechanism
         productRepository.save(product);
     }
 }
