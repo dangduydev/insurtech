@@ -1,4 +1,4 @@
-package com.project.insurtech.repository;
+package com.project.insurtech.repositories;
 
 import com.project.insurtech.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;

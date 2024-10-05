@@ -1,7 +1,6 @@
 package com.project.insurtech.entities;
 
 import jakarta.persistence.Column;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,40 +13,36 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @Entity
-@Table(name = "courses")
+@Table(name = "provider")
 @Data//toString
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Course extends BaseEntity{
+public class Provider extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "topic_id", nullable = false)
-    private String topicId;
-
-    @Column(name = "title", nullable = false)
-    private String title;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "price", nullable = false)
-    private BigDecimal price;
+    @Column(name = "icon")
+    private String icon;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Column(name = "is_deleted", nullable = false)
+    private int isDeleted;
 
-    @Column(name = "teacher_id")
-    private Integer teacherId;
+    @Column(name = "created_by")
+    private String createdBy;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "modified_by")
+    private String modifiedBy;
 
 }

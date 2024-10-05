@@ -4,13 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "product_type")
+@Table(name = "category")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductType extends BaseEntity {
+public class Category extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,7 +23,7 @@ public class ProductType extends BaseEntity {
 
 
     @Column(name = "is_deleted")
-    private int isDeleted;
+    private Boolean isDeleted;
 
     @Column(name = "created_by")
     private String createdBy;

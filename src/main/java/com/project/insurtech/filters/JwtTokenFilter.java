@@ -1,8 +1,8 @@
 package com.project.insurtech.filters;
 
 import com.project.insurtech.components.JwtTokenUtil;
-import com.project.insurtech.configurations.SecurityConfig;
 import com.project.insurtech.entities.User;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,11 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -45,7 +42,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 return;
             }
             final String authHeader = request.getHeader("Authorization");
-            if (authHeader != null || authHeader.startsWith("Bearer ")) {
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 final String token = authHeader.substring(7);
                 final String phoneNumber = jwtTokenUtil.extractClaim(token, claims -> claims.getSubject());
                 User user = (User) userDetailsService.loadUserByUsername(phoneNumber);
@@ -75,7 +72,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         final List<Pair<String, String>> byPassTokens = Arrays.asList(
                 Pair.of(apiPrefix + "/users/register", "POST"),
                 Pair.of(apiPrefix + "/users/login", "POST")
-//                Pair.of(apiPrefix + "/products/product_types", "GET")
         );
         for (Pair<String, String> byPassToken : byPassTokens) {
             if (request.getServletPath().contains(byPassToken.getFirst()) && request.getMethod().equals(byPassToken.getSecond())) {

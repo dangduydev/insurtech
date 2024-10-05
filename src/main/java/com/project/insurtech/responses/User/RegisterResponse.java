@@ -1,6 +1,7 @@
-package com.project.insurtech.responses;
+package com.project.insurtech.responses.User;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project.insurtech.entities.User;
 import lombok.*;
 
 
@@ -9,10 +10,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LoginResponse {
+public class RegisterResponse {
     @JsonProperty("message")
     private String message;
 
-    @JsonProperty("token")
-    private String token;
+    @JsonProperty("user")
+    private User user;
 }

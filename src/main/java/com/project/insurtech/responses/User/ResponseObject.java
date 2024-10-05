@@ -1,4 +1,4 @@
-package com.project.insurtech.responses;
+package com.project.insurtech.responses.User;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
