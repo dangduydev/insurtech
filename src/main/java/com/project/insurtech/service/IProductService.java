@@ -4,11 +4,12 @@ package com.project.insurtech.service;
 import com.project.insurtech.dtos.ProductDTO;
 import com.project.insurtech.entities.Product;
 import com.project.insurtech.exceptions.DataNotFoundException;
-
-import java.util.List;
+import com.project.insurtech.responses.Product.ProductResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface IProductService {
-    List<Product> getAllProducts();
+    Page<ProductResponse> getAllProducts(String name, Long categoryId, Long providerId, String status, Pageable pageable);
 
     Product getProductById(Long id) throws DataNotFoundException;
 

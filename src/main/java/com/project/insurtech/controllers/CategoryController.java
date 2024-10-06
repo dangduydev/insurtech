@@ -3,7 +3,6 @@ package com.project.insurtech.controllers;
 import com.project.insurtech.dtos.CategoryDTO;
 import com.project.insurtech.entities.Category;
 import com.project.insurtech.exceptions.DataNotFoundException;
-import com.project.insurtech.responses.Category.CategoryResponse;
 import com.project.insurtech.responses.User.ResponseObject;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
