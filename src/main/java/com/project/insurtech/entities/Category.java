@@ -4,13 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "product_type")
+@Table(name = "category")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductType extends BaseEntity {
+public class Category extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,13 +21,16 @@ public class ProductType extends BaseEntity {
     @Column(name = "description")
     private String description;
 
-
-    @Column(name = "is_deleted")
-    private int isDeleted;
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
 
     @Column(name = "created_by")
-    private String createdBy;
+    private Long createdBy;
 
     @Column(name = "modified_by")
-    private String modifiedBy;
+    private Long modifiedBy;
+
+    @ManyToOne
+    @JoinColumn(name = "provider_id", nullable = false)
+    private User provider;
 }

@@ -1,9 +1,9 @@
-package com.project.insurtech.controller;
+package com.project.insurtech.controllers;
 
 import com.project.insurtech.dtos.UserDTO;
 import com.project.insurtech.entities.User;
-import com.project.insurtech.responses.LoginResponse;
-import com.project.insurtech.responses.RegisterResponse;
+import com.project.insurtech.responses.User.LoginResponse;
+import com.project.insurtech.responses.User.RegisterResponse;
 import com.project.insurtech.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
