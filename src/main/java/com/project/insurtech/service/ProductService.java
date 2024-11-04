@@ -83,9 +83,9 @@ public class ProductService implements IProductService {
 
         // Map ProductDTO to Product entity
         Product product = productMapper.fromDTOtoEntity(productDTO);
+        product.setIsDeleted(IsDeletedEnum.NOT_DELETED.getValue());
         product.setCategoryId(category.getId());
         product.setProvider(category.getProvider());
-        product.setIsDeleted(false);
 
         // Save the product and retrieve its ID
         Product savedProduct = productRepository.save(product);

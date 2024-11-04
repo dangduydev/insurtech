@@ -21,6 +21,7 @@ public class ProductDTO {
     private String name;
     private String description;
     private String gender;
+    private Double price;
     private String applicableObject;
     private String scope;
     private String exclusion;

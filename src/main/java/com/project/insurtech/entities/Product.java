@@ -77,10 +77,11 @@ public class Product extends BaseEntity {
     @Column(name = "modified_by")
     private String modifiedBy;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<MainTerm> mainTerms;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<SideTerm> sideTerms;
+
 
 }
