@@ -37,6 +37,9 @@ public class WebSecurityConfig {
                             .permitAll()
 
                             .requestMatchers(
+                                    POST, String.format("%s/files/**", apiPrefix)).permitAll()
+
+                            .requestMatchers(
                                     GET, String.format("%s/categories/**", apiPrefix)).hasRole(Role.PROVIDER)
                             .requestMatchers(
                                     POST, String.format("%s/categories/**", apiPrefix)).hasRole(Role.PROVIDER)

@@ -20,7 +20,17 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  multipart:
+    max-file-size: 10MB      # Giới hạn kích thước tệp tối đa (có thể thay đổi theo nhu cầu)
+    max-request-size: 10MB    # Giới hạn kích thước toàn bộ yêu cầu (bao gồm cả các tệp)
 
 jwt:
-  expiration: 86400 # 1 day
+  expiration: 345600 # 1 day
   secretKey: KYbIMbDQ2deGncAVp4nyxlr8eJxqDwaQzWE+HXHoHvk=
+
+minio:
+  url: http://100.102.83.94:9000
+  access-key: yhcHjshvyfEv8nnBPBDp
+  secret-key: FhgncVHyTETijuemomk3LqekPsq8UI8kqmE4NPVh
+  bucket:
+    name: insurtech
