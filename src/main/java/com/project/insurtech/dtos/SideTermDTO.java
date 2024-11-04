@@ -5,6 +5,8 @@ import lombok.Data;
 
 @Data
 public class SideTermDTO {
+    private Long id;
+    
     @NotEmpty(message = "SideTerm's productId cannot be empty")
     private Long productId;
 

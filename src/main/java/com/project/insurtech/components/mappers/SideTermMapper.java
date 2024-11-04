@@ -11,4 +11,7 @@ import org.mapstruct.Mapping;
 public interface SideTermMapper {
     @Mapping(target = "isDeleted", ignore = true)
     SideTerm fromDTOtoEntity(SideTermDTO sideTermDTO);
+
+    @Mapping(target = "productId", source = "product.id")
+    SideTermDTO fromEntitiesToDTOs(SideTerm sideTerm);
 }

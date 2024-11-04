@@ -13,6 +13,8 @@ public interface ProductMapper {
 
     ProductDTO fromEntityToDTO(Product product);
 
+    @Mapping(target = "mainTerms", source = "mainTerms")
+    @Mapping(target = "sideTerms", source = "sideTerms")
     ProductResponse fromEntityToResponse(Product product);
 
 //    void updateEntityFromDto(Product product, ProductDTO productDTO);

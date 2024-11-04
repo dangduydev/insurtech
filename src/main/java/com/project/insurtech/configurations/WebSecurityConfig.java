@@ -37,13 +37,13 @@ public class WebSecurityConfig {
                             .permitAll()
 
                             .requestMatchers(
-                                    GET, String.format("%s/categories/**", apiPrefix)).permitAll()
+                                    GET, String.format("%s/categories/**", apiPrefix)).hasRole(Role.PROVIDER)
                             .requestMatchers(
                                     POST, String.format("%s/categories/**", apiPrefix)).hasRole(Role.PROVIDER)
                             .requestMatchers(
-                                    PUT, String.format("%s/categories/**", apiPrefix)).permitAll()
+                                    PUT, String.format("%s/categories/**", apiPrefix)).hasRole(Role.PROVIDER)
                             .requestMatchers(
-                                    DELETE, String.format("%s/categories/**", apiPrefix)).permitAll()
+                                    DELETE, String.format("%s/categories/**", apiPrefix)).hasRole(Role.PROVIDER)
 
                             .requestMatchers(
                                     GET, String.format("%s/products/**", apiPrefix)).hasRole(Role.PROVIDER)

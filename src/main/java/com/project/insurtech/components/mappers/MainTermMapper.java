@@ -10,4 +10,7 @@ public interface MainTermMapper {
 
     @Mapping(target = "isDeleted", ignore = true)
     MainTerm fromDTOtoEntity(MainTermDTO mainTermDTO);
+
+    @Mapping(target = "productId", source = "product.id")
+    MainTermDTO fromEntitiesToDTOs(MainTerm mainTerm);
 }

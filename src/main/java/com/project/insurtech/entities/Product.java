@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -19,7 +20,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Product extends BaseEntity{
+public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -49,6 +50,9 @@ public class Product extends BaseEntity{
     @Column(name = "description")
     private String description;
 
+    @Column(name = "price")
+    private Double price;
+
     @Column(name = "applicable_object")
     private String applicableObject;
 
@@ -72,5 +76,11 @@ public class Product extends BaseEntity{
 
     @Column(name = "modified_by")
     private String modifiedBy;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<MainTerm> mainTerms;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<SideTerm> sideTerms;
 
 }

@@ -11,6 +11,7 @@ import com.project.insurtech.exceptions.DataNotFoundException; // Create this ex
 import com.project.insurtech.components.mappers.ProductMapper;
 import com.project.insurtech.repositories.*;
 import com.project.insurtech.responses.ProductResponse;
+import com.project.insurtech.specifications.ProductSpecification;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +44,22 @@ public class ProductService implements IProductService {
     @Override
     public List<ProductResponse> getAllProductsByProviderId(Long providerId) {
         List<Product> products = productRepository.findByProviderId(providerId);
-        return products.stream().map(productMapper::fromEntityToResponse).toList();
+        List<ProductResponse> productResponses = new ArrayList<>();
+
+        for (Product product : products) {
+            ProductResponse response = productMapper.fromEntityToResponse(product);
+
+            // Lấy các MainTerm và SideTerm theo product ID
+            List<MainTerm> mainTerms = mainTermRepository.findByProductId(product.getId());
+            List<SideTerm> sideTerms = sideTermRepository.findByProductId(product.getId());
+
+            response.setMainTerms(mainTerms.stream().map(mainTermMapper::fromEntitiesToDTOs).toList());
+            response.setSideTerms(sideTerms.stream().map(sideTermMapper::fromEntitiesToDTOs).toList());
+
+            productResponses.add(response);
+        }
+
+        return productResponses;
     }
 
     @Override
@@ -56,6 +73,7 @@ public class ProductService implements IProductService {
     public Product createProduct(Long providerId, ProductDTO productDTO) throws DataNotFoundException {
         // Log the start of the process
         logger.info("Creating product and associated terms for category ID: {}", productDTO.getCategoryId());
+
         // Check if category exists
         Category category = categoryRepository.findByIdAndIsDeletedAndProviderId(
                         productDTO.getCategoryId(),
@@ -78,7 +96,7 @@ public class ProductService implements IProductService {
         if (mainTermDTOs != null && !mainTermDTOs.isEmpty()) {
             for (MainTermDTO mainTermDTO : mainTermDTOs) {
                 MainTerm mainTerm = mainTermMapper.fromDTOtoEntity(mainTermDTO);
-                mainTerm.setProductId(savedProduct.getId());
+                mainTerm.setProduct(savedProduct); // Set the Product entity directly
                 mainTerm.setIsDeleted(IsDeletedEnum.NOT_DELETED.getValue());
                 mainTermRepository.save(mainTerm);
                 logger.info("MainTerm created for product ID: {}", savedProduct.getId());
@@ -90,13 +108,13 @@ public class ProductService implements IProductService {
         if (sideTermDTOs != null && !sideTermDTOs.isEmpty()) {
             for (SideTermDTO sideTermDTO : sideTermDTOs) {
                 SideTerm sideTerm = sideTermMapper.fromDTOtoEntity(sideTermDTO);
-                sideTerm.setProductId(savedProduct.getId());
+                sideTerm.setProduct(savedProduct); // Set the Product entity directly
                 sideTerm.setIsDeleted(IsDeletedEnum.NOT_DELETED.getValue());
-
                 sideTermRepository.save(sideTerm);
                 logger.info("SideTerm created for product ID: {}", savedProduct.getId());
             }
         }
+
         return savedProduct;
     }
 

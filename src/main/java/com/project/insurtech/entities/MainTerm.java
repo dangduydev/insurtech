@@ -1,5 +1,6 @@
 package com.project.insurtech.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,8 +16,10 @@ public class MainTerm {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "product_id", nullable = false)
-    private Long productId;
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+//    @JsonIgnore
+    private Product product;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -39,7 +42,4 @@ public class MainTerm {
     @Column(name = "modified_by")
     private Long modifiedBy;
 
-    @OneToOne
-    @JoinColumn(name = "product_id", nullable = false, insertable = false, updatable = false)
-    private Product product;
 }
