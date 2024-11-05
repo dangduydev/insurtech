@@ -2,8 +2,6 @@ package com.project.insurtech.responses;
 
 import com.project.insurtech.dtos.MainTermDTO;
 import com.project.insurtech.dtos.SideTermDTO;
-import com.project.insurtech.entities.MainTerm;
-import com.project.insurtech.entities.SideTerm;
 import lombok.*;
 
 import java.util.List;

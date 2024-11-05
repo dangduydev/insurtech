@@ -75,6 +75,9 @@ public class WebSecurityConfig {
                             .requestMatchers(
                                     DELETE, String.format("%s/providers/**", apiPrefix)).permitAll()
 
+                            .requestMatchers(
+                                    GET, String.format("%s/users/{id}", apiPrefix)).permitAll()
+
                             .anyRequest().authenticated();
                 });
         return http.build();

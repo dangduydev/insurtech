@@ -1,6 +1,7 @@
 package com.project.insurtech.components.helpers;
 
 import com.project.insurtech.components.JwtTokenUtil;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -36,6 +37,25 @@ public class RequestHelper {
             return userId;
         } catch (Exception e) {
             logger.error("Error extracting user ID from token: {}", e.getMessage());
+            return null; // Handle token extraction errors
+        }
+    }
+
+    public String getPhoneNumber(HttpServletRequest request) {
+        String token = getToken(request);
+        if (token == null) {
+            logger.warn("Authorization token is missing or invalid.");
+            return null; // Or you could throw an exception, depending on your design
+        }
+
+        try {
+            String phoneNumber = jwtTokenUtil.extractClaim(token, Claims::getSubject);
+            if (phoneNumber == null) {
+                logger.warn("Phone number not found in token claims.");
+            }
+            return phoneNumber;
+        } catch (Exception e) {
+            logger.error("Error extracting phone number from token: {}", e.getMessage());
             return null; // Handle token extraction errors
         }
     }

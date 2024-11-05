@@ -11,6 +11,7 @@ import com.project.insurtech.exceptions.DataNotFoundException;
 import com.project.insurtech.repositories.IProviderRepository;
 import com.project.insurtech.repositories.IRoleRepository;
 import com.project.insurtech.repositories.IUserRepository;
+import com.project.insurtech.responses.User.UserDetailResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -135,6 +136,21 @@ public class UserService implements IUserService {
                 .build();
         providerRepository.save(provider);
         return savedUser;
+    }
+
+    @Override
+    public UserDetailResponse getUserDetail(Long id) throws Exception {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
+        return UserDetailResponse.builder()
+                .fullName(user.getFullName())
+                .phoneNumber(user.getPhoneNumber())
+                .address(user.getAddress())
+                .password(user.getPassword())
+                .email(user.getEmail())
+                .dateOfBirth(user.getDateOfBirth())
+                .avatar(user.getAvatar())
+                .build();
     }
 
     private String generateRandomPassword() {
