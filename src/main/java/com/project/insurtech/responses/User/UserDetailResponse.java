@@ -14,7 +14,6 @@ public class UserDetailResponse {
     private String fullName;
     private String phoneNumber;
     private String address;
-    private String password;
     private String email;
     private Date dateOfBirth;
     private String avatar;
