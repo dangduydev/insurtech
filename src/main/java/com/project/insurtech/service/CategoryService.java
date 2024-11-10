@@ -33,12 +33,9 @@ public class CategoryService implements ICategoryService {
     private final IUserRepository userRepository;
 
     @Override
-    public List<CategoryResponse> getCategories(Long providerId) {
-        logger.info("Fetching categories for provider with id {}", providerId);
-        List<Category> categories = categoryRepository.findAllByIsDeletedAndProviderId(
-                IsDeletedEnum.NOT_DELETED.getValue(),
-                providerId
-        );
+    public List<CategoryResponse> getCategories() {
+        logger.info("Fetching categories from database");
+        List<Category> categories = categoryRepository.findAllByIsDeleted(IsDeletedEnum.NOT_DELETED.getValue());
         return categories.stream()
                 .map(categoryMapper::fromEntityToResponse)
                 .collect(Collectors.toList());

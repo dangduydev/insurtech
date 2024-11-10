@@ -10,18 +10,21 @@ import com.project.insurtech.enums.IsDeletedEnum;
 import com.project.insurtech.exceptions.DataNotFoundException; // Create this exception class
 import com.project.insurtech.components.mappers.ProductMapper;
 import com.project.insurtech.repositories.*;
-import com.project.insurtech.responses.ProductResponse;
+import com.project.insurtech.responses.Product.ProductListResponse;
+import com.project.insurtech.responses.Product.ProductResponse;
 import com.project.insurtech.specifications.ProductSpecification;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,22 +47,9 @@ public class ProductService implements IProductService {
     @Override
     public List<ProductResponse> getAllProductsByProviderId(Long providerId) {
         List<Product> products = productRepository.findByProviderId(providerId);
-        List<ProductResponse> productResponses = new ArrayList<>();
-
-        for (Product product : products) {
-            ProductResponse response = productMapper.fromEntityToResponse(product);
-
-            // Lấy các MainTerm và SideTerm theo product ID
-            List<MainTerm> mainTerms = mainTermRepository.findByProductId(product.getId());
-            List<SideTerm> sideTerms = sideTermRepository.findByProductId(product.getId());
-
-            response.setMainTerms(mainTerms.stream().map(mainTermMapper::fromEntitiesToDTOs).toList());
-            response.setSideTerms(sideTerms.stream().map(sideTermMapper::fromEntitiesToDTOs).toList());
-
-            productResponses.add(response);
-        }
-
-        return productResponses;
+        return products.stream()
+                .map(productMapper::fromEntityToResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -84,8 +74,10 @@ public class ProductService implements IProductService {
         // Map ProductDTO to Product entity
         Product product = productMapper.fromDTOtoEntity(productDTO);
         product.setIsDeleted(IsDeletedEnum.NOT_DELETED.getValue());
-        product.setCategoryId(category.getId());
+        product.setCategory(category);
         product.setProvider(category.getProvider());
+        product.setCreatedAt(LocalDateTime.now());
+        product.setModifiedAt(LocalDateTime.now());
 
         // Save the product and retrieve its ID
         Product savedProduct = productRepository.save(product);
@@ -98,6 +90,8 @@ public class ProductService implements IProductService {
                 MainTerm mainTerm = mainTermMapper.fromDTOtoEntity(mainTermDTO);
                 mainTerm.setProduct(savedProduct); // Set the Product entity directly
                 mainTerm.setIsDeleted(IsDeletedEnum.NOT_DELETED.getValue());
+//                mainTerm.setCreatedAt(LocalDateTime.now());
+//                mainTerm.setModifiedAt(LocalDateTime.now());
                 mainTermRepository.save(mainTerm);
                 logger.info("MainTerm created for product ID: {}", savedProduct.getId());
             }
@@ -110,6 +104,8 @@ public class ProductService implements IProductService {
                 SideTerm sideTerm = sideTermMapper.fromDTOtoEntity(sideTermDTO);
                 sideTerm.setProduct(savedProduct); // Set the Product entity directly
                 sideTerm.setIsDeleted(IsDeletedEnum.NOT_DELETED.getValue());
+//                sideTerm.setCreatedAt(LocalDateTime.now());
+//                sideTerm.setModifiedAt(LocalDateTime.now());
                 sideTermRepository.save(sideTerm);
                 logger.info("SideTerm created for product ID: {}", savedProduct.getId());
             }
@@ -135,4 +131,17 @@ public class ProductService implements IProductService {
         product.setIsDeleted(IsDeletedEnum.DELETED.getValue()); // Or use a more sophisticated soft-delete mechanism
         productRepository.save(product);
     }
+
+    @Override
+    public Page<ProductListResponse> getFilteredProducts(
+            String categoryId,
+            Long providerId,
+            String gender,
+            Pageable pageable
+    ) {
+        return productRepository
+                .findAll(ProductSpecification.userGetProductSpecification(categoryId, providerId, gender), pageable)
+                .map(productMapper::fromEntityToProductListResponse);
+    }
+
 }

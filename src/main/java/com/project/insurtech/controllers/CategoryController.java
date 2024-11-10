@@ -31,7 +31,7 @@ public class CategoryController {
 
     @GetMapping("")
     public ResponseEntity<ResponseObject> getCategoryList(HttpServletRequest request) {
-        List<CategoryResponse> categoryList = categoryService.getCategories(requestUtil.getUserId(request));
+        List<CategoryResponse> categoryList = categoryService.getCategories();
 
         return ResponseEntity.ok(ResponseObject.builder()
                 .message("Categories retrieved successfully")

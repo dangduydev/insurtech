@@ -40,7 +40,7 @@ public class WebSecurityConfig {
                                     POST, String.format("%s/files/**", apiPrefix)).permitAll()
 
                             .requestMatchers(
-                                    GET, String.format("%s/categories/**", apiPrefix)).hasRole(Role.PROVIDER)
+                                    GET, String.format("%s/categories/**", apiPrefix)).permitAll()
                             .requestMatchers(
                                     POST, String.format("%s/categories/**", apiPrefix)).hasRole(Role.PROVIDER)
                             .requestMatchers(
@@ -49,13 +49,17 @@ public class WebSecurityConfig {
                                     DELETE, String.format("%s/categories/**", apiPrefix)).hasRole(Role.PROVIDER)
 
                             .requestMatchers(
-                                    GET, String.format("%s/products/**", apiPrefix)).hasRole(Role.PROVIDER)
+                                    GET, String.format("%s/products/", apiPrefix)).hasRole(Role.PROVIDER)
                             .requestMatchers(
                                     POST, String.format("%s/products/**", apiPrefix)).hasRole(Role.PROVIDER)
                             .requestMatchers(
                                     PUT, String.format("%s/products/**", apiPrefix)).hasRole(Role.PROVIDER)
                             .requestMatchers(
                                     DELETE, String.format("%s/products/**", apiPrefix)).hasRole(Role.PROVIDER)
+
+                            //API mobile
+                            .requestMatchers(
+                                    GET, String.format("%s/products/filter", apiPrefix)).permitAll() // Corrected line
 
                             .requestMatchers(
                                     POST, String.format("%s/admin/**", apiPrefix)).hasRole(Role.ADMIN)

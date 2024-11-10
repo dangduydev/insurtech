@@ -3,6 +3,10 @@ package com.project.insurtech.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "main_term")
@@ -42,4 +46,11 @@ public class MainTerm {
     @Column(name = "modified_by")
     private Long modifiedBy;
 
+    // @CreationTimestamp
+    // @Column(name = "created_at")
+    // private LocalDateTime createdAt;
+
+    // @UpdateTimestamp
+    // @Column(name = "modified_at")
+    // private LocalDateTime modifiedAt;
 }

@@ -25,6 +25,7 @@ public class ProductDTO {
     private String applicableObject;
     private String scope;
     private String exclusion;
+    private String highlight;
     private String thumbnail;
     private String attachment;
 

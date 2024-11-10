@@ -4,13 +4,16 @@ package com.project.insurtech.service;
 import com.project.insurtech.dtos.ProductDTO;
 import com.project.insurtech.entities.Product;
 import com.project.insurtech.exceptions.DataNotFoundException;
-import com.project.insurtech.responses.ProductResponse;
-import jakarta.servlet.http.HttpServletRequest;
+import com.project.insurtech.responses.Product.ProductListResponse;
+import com.project.insurtech.responses.Product.ProductResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface IProductService {
     List<Product> getAllProducts();
+
     List<ProductResponse> getAllProductsByProviderId(Long providerId);
 
     Product getProductById(Long id) throws DataNotFoundException;
@@ -20,5 +23,12 @@ public interface IProductService {
     Product updateProduct(Long id, ProductDTO productDTO) throws DataNotFoundException;
 
     void deleteProduct(Long id) throws DataNotFoundException;
+
+    //Mobile API
+    Page<ProductListResponse> getFilteredProducts(
+            String categoryId,
+            Long providerId,
+            String gender,
+            Pageable pageable);
 
 }

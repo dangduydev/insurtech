@@ -1,4 +1,4 @@
-package com.project.insurtech.responses;
+package com.project.insurtech.responses.Product;
 
 import com.project.insurtech.dtos.MainTermDTO;
 import com.project.insurtech.dtos.SideTermDTO;
@@ -23,6 +23,7 @@ public class ProductResponse {
     private String applicableObject;
     private String scope;
     private String exclusion;
+    private String highlight;
     private Double price;
     private String thumbnail;
     private String attachment;

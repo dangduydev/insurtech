@@ -1,11 +1,14 @@
 package com.project.insurtech.controllers;
 
+import com.project.insurtech.components.helpers.PageHelper;
 import com.project.insurtech.components.helpers.RequestHelper;
 import com.project.insurtech.components.helpers.ValidationHelper;
 import com.project.insurtech.dtos.ProductDTO;
 import com.project.insurtech.entities.Product;
 import com.project.insurtech.exceptions.DataNotFoundException;
-import com.project.insurtech.responses.ProductResponse;
+import com.project.insurtech.responses.PageResponse;
+import com.project.insurtech.responses.Product.ProductListResponse;
+import com.project.insurtech.responses.Product.ProductResponse;
 import com.project.insurtech.responses.User.ResponseObject;
 import com.project.insurtech.service.IProductService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +16,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -28,6 +35,7 @@ public class ProductController {
     private final IProductService productService;
     private final ValidationHelper validationHelper;
     private final RequestHelper requestHelper;
+    private final PageHelper pageHelper;
 
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getAllProducts(HttpServletRequest request) {
@@ -86,4 +94,30 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @GetMapping("/filter")
+    public ResponseEntity<PageResponse<ProductListResponse>> getFilteredProducts(
+            @RequestParam(value = "categoryId", required = false) String categoryId,
+            @RequestParam(value = "providerId", required = false) Long providerId,
+            @RequestParam(value = "gender", required = false) String gender,
+            @RequestParam(value = "sortBy", required = false, defaultValue = "id") String sortBy,
+            @RequestParam(value = "sortDir", required = false, defaultValue = "asc") String sortDir,
+            Pageable pageable
+    ) {
+        try {
+            Pageable pageableWithSort = PageRequest.of(
+                    pageable.getPageNumber(),
+                    pageable.getPageSize(),
+                    Sort.by(sortDir.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC, sortBy)
+            );
+            Page<ProductListResponse> productResponses = productService.getFilteredProducts(categoryId, providerId, gender, pageableWithSort);
+            PageResponse<ProductListResponse> response = pageHelper.toPagedResponse(productResponses);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            // Handles any other unexpected errors
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
 }

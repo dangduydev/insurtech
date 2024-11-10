@@ -25,8 +25,9 @@ public class Product extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "category_id", nullable = false)
-    private Long categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     @ManyToOne
     @JoinColumn(name = "provider_id", nullable = false)
@@ -61,6 +62,9 @@ public class Product extends BaseEntity {
 
     @Column(name = "exclusion")
     private String exclusion;
+
+    @Column(name = "highlight")
+    private String highlight;
 
     @Column(name = "thumbnail")
     private String thumbnail;
