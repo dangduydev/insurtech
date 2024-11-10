@@ -1,4 +1,4 @@
-package com.project.insurtech.service;
+package com.project.insurtech.service.Impl;
 
 import com.project.insurtech.components.mappers.MainTermMapper;
 import com.project.insurtech.components.mappers.SideTermMapper;
@@ -12,6 +12,8 @@ import com.project.insurtech.components.mappers.ProductMapper;
 import com.project.insurtech.repositories.*;
 import com.project.insurtech.responses.Product.ProductListResponse;
 import com.project.insurtech.responses.Product.ProductResponse;
+import com.project.insurtech.responses.Provider.ProviderProductResponse;
+import com.project.insurtech.service.IProductService;
 import com.project.insurtech.specifications.ProductSpecification;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -22,8 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +38,7 @@ public class ProductService implements IProductService {
     private final IMainTermRepository mainTermRepository;
     private final ISideTermRepository sideTermRepository;
     private final SideTermMapper sideTermMapper;
+    private final IUserRepository userRepository;
 
 
     @Override
@@ -53,9 +55,10 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Product getProductById(Long id) throws DataNotFoundException {
-        Optional<Product> product = productRepository.findById(id);
-        return product.orElseThrow(() -> new DataNotFoundException("Product not found with id: " + id));
+    public ProductResponse getProductById(Long id) throws DataNotFoundException {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Product not found with id: " + id));
+        return productMapper.fromEntityToResponse(product);
     }
 
     @Override
@@ -142,6 +145,20 @@ public class ProductService implements IProductService {
         return productRepository
                 .findAll(ProductSpecification.userGetProductSpecification(categoryId, providerId, gender), pageable)
                 .map(productMapper::fromEntityToProductListResponse);
+    }
+
+    @Override
+    public List<ProviderProductResponse> getProductCountByProvider() {
+        List<User> providers = userRepository.findAllProviders();
+        if (providers.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return productRepository.countProductsByProviders(
+                providers.stream()
+                        .map(User::getId)
+                        .collect(Collectors.toList())
+        );
     }
 
 }

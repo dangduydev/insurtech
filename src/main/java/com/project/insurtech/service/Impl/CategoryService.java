@@ -1,17 +1,15 @@
-package com.project.insurtech.service;
+package com.project.insurtech.service.Impl;
 
-import com.project.insurtech.controllers.AdminController;
 import com.project.insurtech.dtos.CategoryDTO;
 import com.project.insurtech.entities.Category;
-import com.project.insurtech.entities.Provider;
 import com.project.insurtech.entities.User;
 import com.project.insurtech.enums.IsDeletedEnum;
 import com.project.insurtech.exceptions.DataNotFoundException;
 import com.project.insurtech.components.mappers.CategoryMapper;
 import com.project.insurtech.repositories.ICategoryRepository;
-import com.project.insurtech.repositories.IProviderRepository;
 import com.project.insurtech.repositories.IUserRepository;
 import com.project.insurtech.responses.Category.CategoryResponse;
+import com.project.insurtech.service.ICategoryService;
 import com.project.insurtech.specifications.CategorySpecification;
 import lombok.RequiredArgsConstructor;
 

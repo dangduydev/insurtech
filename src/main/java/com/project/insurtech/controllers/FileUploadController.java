@@ -1,6 +1,6 @@
 package com.project.insurtech.controllers;
 
-import com.project.insurtech.service.MinioService;
+import com.project.insurtech.service.Impl.MinioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

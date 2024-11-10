@@ -1,6 +1,7 @@
 package com.project.insurtech.configurations;
 
 import com.project.insurtech.entities.Role;
+import com.project.insurtech.entities.User;
 import com.project.insurtech.filters.JwtTokenFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,7 +60,11 @@ public class WebSecurityConfig {
 
                             //API mobile
                             .requestMatchers(
-                                    GET, String.format("%s/products/filter", apiPrefix)).permitAll() // Corrected line
+                                    GET, String.format("%s/products/list", apiPrefix)).hasRole(Role.USER)
+                            .requestMatchers(
+                                    GET, String.format("%s/products/{id}", apiPrefix)).hasRole(Role.USER)
+                            .requestMatchers(
+                                    GET, String.format("%s/products/count-by-provider", apiPrefix)).hasRole(Role.USER)
 
                             .requestMatchers(
                                     POST, String.format("%s/admin/**", apiPrefix)).hasRole(Role.ADMIN)

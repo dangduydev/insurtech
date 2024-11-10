@@ -3,7 +3,6 @@ package com.project.insurtech.controllers;
 import com.project.insurtech.components.helpers.RequestHelper;
 import com.project.insurtech.components.helpers.ValidationHelper;
 import com.project.insurtech.dtos.CategoryDTO;
-import com.project.insurtech.entities.Category;
 import com.project.insurtech.exceptions.DataNotFoundException;
 import com.project.insurtech.responses.Category.CategoryResponse;
 import com.project.insurtech.responses.User.ResponseObject;
@@ -15,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import com.project.insurtech.service.CategoryService;
+import com.project.insurtech.service.Impl.CategoryService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

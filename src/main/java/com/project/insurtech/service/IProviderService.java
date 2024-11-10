@@ -1,5 +1,10 @@
 package com.project.insurtech.service;
 
-public class IProviderService {
+import com.project.insurtech.responses.Provider.ProviderProductResponse;
 
+import java.util.List;
+
+public interface IProviderService {
+
+    List<ProviderProductResponse> getProviderProduct();
 }

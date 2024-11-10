@@ -1,4 +1,4 @@
-package com.project.insurtech.service;
+package com.project.insurtech.service.Impl;
 
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;

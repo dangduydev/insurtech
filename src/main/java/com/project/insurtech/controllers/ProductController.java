@@ -9,6 +9,7 @@ import com.project.insurtech.exceptions.DataNotFoundException;
 import com.project.insurtech.responses.PageResponse;
 import com.project.insurtech.responses.Product.ProductListResponse;
 import com.project.insurtech.responses.Product.ProductResponse;
+import com.project.insurtech.responses.Provider.ProviderProductResponse;
 import com.project.insurtech.responses.User.ResponseObject;
 import com.project.insurtech.service.IProductService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,6 +27,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,7 +45,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(productService.getProductById(id));
         } catch (DataNotFoundException e) {
@@ -95,8 +97,8 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/filter")
-    public ResponseEntity<PageResponse<ProductListResponse>> getFilteredProducts(
+    @GetMapping("/list")
+    public ResponseEntity<PageResponse<ProductListResponse>> userGetProducts(
             @RequestParam(value = "categoryId", required = false) String categoryId,
             @RequestParam(value = "providerId", required = false) Long providerId,
             @RequestParam(value = "gender", required = false) String gender,
@@ -117,6 +119,12 @@ public class ProductController {
             // Handles any other unexpected errors
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GetMapping("/count-by-provider")
+    public ResponseEntity<List<ProviderProductResponse>> getProductCountByProvider() {
+        List<ProviderProductResponse> result = productService.getProductCountByProvider();
+        return ResponseEntity.ok(result);
     }
 
 

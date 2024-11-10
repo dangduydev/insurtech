@@ -1,4 +1,4 @@
-package com.project.insurtech.service;
+package com.project.insurtech.service.Impl;
 
 import com.project.insurtech.components.JwtTokenUtil;
 import com.project.insurtech.dtos.ProviderDTO;
@@ -12,6 +12,7 @@ import com.project.insurtech.repositories.IProviderRepository;
 import com.project.insurtech.repositories.IRoleRepository;
 import com.project.insurtech.repositories.IUserRepository;
 import com.project.insurtech.responses.User.UserDetailResponse;
+import com.project.insurtech.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

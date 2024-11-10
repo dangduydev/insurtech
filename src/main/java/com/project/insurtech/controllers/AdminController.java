@@ -2,7 +2,7 @@ package com.project.insurtech.controllers;
 
 import com.project.insurtech.dtos.ProviderDTO;
 import com.project.insurtech.responses.User.RegisterResponse;
-import com.project.insurtech.service.UserService;
+import com.project.insurtech.service.Impl.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

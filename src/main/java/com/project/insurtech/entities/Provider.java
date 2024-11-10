@@ -17,6 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class Provider extends BaseEntity {
+    //bỏ vì đã dùng bảng User chung
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

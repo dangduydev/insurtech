@@ -6,17 +6,19 @@ import com.project.insurtech.entities.Product;
 import com.project.insurtech.exceptions.DataNotFoundException;
 import com.project.insurtech.responses.Product.ProductListResponse;
 import com.project.insurtech.responses.Product.ProductResponse;
+import com.project.insurtech.responses.Provider.ProviderProductResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IProductService {
     List<Product> getAllProducts();
 
     List<ProductResponse> getAllProductsByProviderId(Long providerId);
 
-    Product getProductById(Long id) throws DataNotFoundException;
+    ProductResponse getProductById(Long id) throws DataNotFoundException;
 
     Product createProduct(Long providerId, ProductDTO productDTO) throws Exception;
 
@@ -30,5 +32,7 @@ public interface IProductService {
             Long providerId,
             String gender,
             Pageable pageable);
+
+    List<ProviderProductResponse> getProductCountByProvider();
 
 }
