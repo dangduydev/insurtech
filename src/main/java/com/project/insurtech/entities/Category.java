@@ -1,5 +1,6 @@
 package com.project.insurtech.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,5 +33,6 @@ public class Category extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "provider_id", nullable = false)
+    @JsonBackReference
     private User provider;
 }

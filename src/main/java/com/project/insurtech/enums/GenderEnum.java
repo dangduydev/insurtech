@@ -14,4 +14,14 @@ public enum GenderEnum {
     GenderEnum(String value) {
         this.value = value;
     }
+
+    public static GenderEnum fromValue(String value) {
+        for (GenderEnum gender : GenderEnum.values()) {
+            if (gender.value.equalsIgnoreCase(value)) {
+                return gender;
+            }
+        }
+        throw new IllegalArgumentException("Unknown gender value: " + value);
+    }
+
 }

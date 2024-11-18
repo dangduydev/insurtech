@@ -13,6 +13,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+
 @Data//toString
 @Getter
 @Setter
@@ -20,7 +21,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @MappedSuperclass
 
-public class BaseEntity{
+public class BaseEntity {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

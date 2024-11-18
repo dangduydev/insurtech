@@ -7,13 +7,14 @@ import lombok.Data;
 public class SideTermDTO {
     private Long id;
     
-    @NotEmpty(message = "SideTerm's productId cannot be empty")
+//    @NotEmpty(message = "SideTerm's productId cannot be empty")
     private Long productId;
 
-    @NotEmpty(message = "MainTerm's name cannot be empty")
+//    @NotEmpty(message = "MainTerm's name cannot be empty")
     private String name;
 
     private String description;
     private Double amount;
+    private Double price;
     private String icon;
 }

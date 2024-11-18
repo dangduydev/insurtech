@@ -1,5 +1,7 @@
 package com.project.insurtech.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -27,10 +29,12 @@ public class Product extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
+    @JsonBackReference
     private Category category;
 
     @ManyToOne
     @JoinColumn(name = "provider_id", nullable = false)
+    @JsonBackReference
     private User provider;
 
     @Column(name = "from_age")
@@ -82,10 +86,14 @@ public class Product extends BaseEntity {
     private String modifiedBy;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<MainTerm> mainTerms;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<SideTerm> sideTerms;
 
-
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @JsonBackReference
+    private List<ContractDetail> contractDetails;
 }

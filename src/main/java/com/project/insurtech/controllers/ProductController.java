@@ -1,5 +1,7 @@
 package com.project.insurtech.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.insurtech.components.helpers.PageHelper;
 import com.project.insurtech.components.helpers.RequestHelper;
 import com.project.insurtech.components.helpers.ValidationHelper;
@@ -47,9 +49,12 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> getProductById(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(productService.getProductById(id));
+            ProductResponse productResponse = productService.getProductById(id);
+            return ResponseEntity.ok(productResponse);
         } catch (DataNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

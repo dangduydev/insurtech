@@ -159,6 +159,18 @@ public class ProductService implements IProductService {
                         .map(User::getId)
                         .collect(Collectors.toList())
         );
+        // Lấy danh sách providers từ User repository
+//        List<User> providers = userRepository.findAllProviders();
+//        if (providers.isEmpty()) {
+//            return Collections.emptyList();
+//        }
+//
+//        // Lấy danh sách providerId và gọi repository để đếm sản phẩm
+//        List<Long> providerIds = providers.stream()
+//                .map(User::getId)
+//                .collect(Collectors.toList());
+//
+//        return productRepository.countProductsByProviders(providerIds);
     }
 
 }

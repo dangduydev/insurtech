@@ -1,5 +1,6 @@
 package com.project.insurtech.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,7 +19,7 @@ public class SideTerm {
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
-//    @JsonIgnore
+    @JsonBackReference
     private Product product;
 
     @Column(name = "name", nullable = false)
@@ -29,6 +30,9 @@ public class SideTerm {
 
     @Column(name = "amount")
     private Double amount;
+
+    @Column(name = "price")
+    private Double price;
 
     @Column(name = "icon")
     private String icon;

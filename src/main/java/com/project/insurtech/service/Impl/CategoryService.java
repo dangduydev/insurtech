@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +42,7 @@ public class CategoryService implements ICategoryService {
 
 
     @Override
+    @Transactional
     public Category createCategory(CategoryDTO categoryDTO, Long providerId) throws DataNotFoundException {
         User provider = userRepository.findById(providerId)
                 .orElseThrow(() -> new DataNotFoundException("Provider not found with id " + providerId));
@@ -52,6 +54,8 @@ public class CategoryService implements ICategoryService {
         return categoryRepository.save(category);
     }
 
+    @Override
+    @Transactional
     public Category updateCategory(Long id, CategoryDTO categoryDTO) throws DataNotFoundException {
         Specification<Category> spec = Specification
                 .where(CategorySpecification.hasId(id))
@@ -64,6 +68,7 @@ public class CategoryService implements ICategoryService {
 
 
     @Override
+    @Transactional
     public void deleteCategory(Long id) throws DataNotFoundException {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Category not found with id " + id));

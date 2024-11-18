@@ -1,12 +1,8 @@
 package com.project.insurtech.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "main_term")
@@ -22,7 +18,7 @@ public class MainTerm {
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
-//    @JsonIgnore
+    @JsonBackReference
     private Product product;
 
     @Column(name = "name", nullable = false)

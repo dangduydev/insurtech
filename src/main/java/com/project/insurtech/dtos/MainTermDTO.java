@@ -7,10 +7,10 @@ import lombok.Data;
 public class MainTermDTO {
     private Long id;
 
-    @NotEmpty(message = "Product's id cannot be empty")
+//    @NotEmpty(message = "Product's id cannot be empty")
     private Long productId;
 
-    @NotEmpty(message = "MainTerm's name cannot be empty")
+//    @NotEmpty(message = "MainTerm's name cannot be empty")
     private String name;
 
     private String description;

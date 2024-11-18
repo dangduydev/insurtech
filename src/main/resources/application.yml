@@ -19,7 +19,14 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        format_sql: true
+        format_sql: true  # Prevents SQL statements from being split across multiple lines
+#  logging:
+#    level:
+#      org.hibernate.SQL: debug  # Logs SQL queries at the debug level
+#      org.hibernate.type.descriptor.sql.BasicBinder: trace  # Logs SQL parameters in the same line
+#    pattern:
+#      console: "%d{yyyy-MM-dd HH:mm:ss} - [%level] - %logger{36} - %msg%n"  # Log pattern with timestamp and concise formatting
+
   multipart:
     max-file-size: 10MB      # Giới hạn kích thước tệp tối đa (có thể thay đổi theo nhu cầu)
     max-request-size: 10MB    # Giới hạn kích thước toàn bộ yêu cầu (bao gồm cả các tệp)
