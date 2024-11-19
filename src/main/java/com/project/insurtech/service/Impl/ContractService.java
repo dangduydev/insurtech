@@ -2,6 +2,7 @@ package com.project.insurtech.service.Impl;
 
 import com.project.insurtech.components.mappers.ContractMapper;
 import com.project.insurtech.dtos.ContractDTO;
+import com.project.insurtech.dtos.ContractDetailDTO;
 import com.project.insurtech.dtos.MainTermDTO;
 import com.project.insurtech.dtos.SideTermDTO;
 import com.project.insurtech.entities.*;
@@ -56,6 +57,7 @@ public class ContractService implements IContractService {
             List<SideTerm> sideTerms = sideTermRepository.findAllById(
                     contractDTO.getContractDetailDTO().getSideTerms().stream().map(SideTermDTO::getId)
                             .collect(Collectors.toList()));
+
             double price = product.getPrice() +
                     +sideTerms.stream().mapToDouble(SideTerm::getPrice).sum();
             Contract contract = new Contract().builder()
@@ -70,6 +72,8 @@ public class ContractService implements IContractService {
                     .email(contractDTO.getEmail())
                     .address(contractDTO.getAddress())
                     .price(price)
+                    .createdBy(userId)
+                    .modifiedBy(userId)
                     .build();
             contract.setUser(user);
             contract = contractRepository.save(contract);
@@ -88,8 +92,10 @@ public class ContractService implements IContractService {
                     .phone(contractDTO.getContractDetailDTO().getPhone())
                     .email(contractDTO.getContractDetailDTO().getEmail())
                     .address(contractDTO.getContractDetailDTO().getAddress())
+                    .createdBy(userId)
+                    .modifiedBy(userId)
                     .build();
-            contractDetail.setProduct(product);
+            contractDetail.setProductId(product.getId());
             contractDetailRepository.save(contractDetail);
             List<ContractMainTerm> contractMainTerms = new ArrayList<>();
             for (MainTerm mainTerm : mainTerms) {
@@ -98,6 +104,8 @@ public class ContractService implements IContractService {
                         .name(mainTerm.getName())
                         .description(mainTerm.getDescription())
                         .amount(mainTerm.getAmount())
+                        .createdBy(userId)
+                        .modifiedBy(userId)
                         .build();
                 contractMainTermRepository.save(contractMainTerm);
                 contractMainTerms.add(contractMainTerm);
@@ -109,13 +117,12 @@ public class ContractService implements IContractService {
                         .name(sideTerm.getName())
                         .description(sideTerm.getDescription())
                         .amount(sideTerm.getAmount())
+                        .createdBy(userId)
+                        .modifiedBy(userId)
                         .build();
                 contractSideTermRepository.save(contractSideTerm);
                 contractSideTerms.add(contractSideTerm);
             }
-//            contractDetail.setContractMainTerms(contractMainTerms);
-//            contractDetail.setContractSideTerms(contractSideTerms);
-//            contract.setContractDetail(contractDetail);
             return contract;
         } catch (Exception e) {
             logger.error("Failed to create contract: {}", e.getMessage());
@@ -126,5 +133,27 @@ public class ContractService implements IContractService {
     @Override
     public List<UserGetContractListResponse> getContractsByUserId(Long userId) throws DataNotFoundException {
         return contractRepository.findContractsByUserId(userId);
+    }
+
+    @Override
+    public Contract getContractDetail(Long contractId) throws DataNotFoundException {
+        Contract contract = contractRepository.findById(contractId)
+                .orElseThrow(() -> new DataNotFoundException("Contract not found with id: " + contractId));
+//        ContractDTO contractDTO = contractMapper.fromEntityToDTO(contract);
+        ContractDetail contractDetail = contractDetailRepository.findByContractId(contractId)
+                .orElseThrow(() -> new DataNotFoundException("Contract detail not found with contract id: " + contractId));
+//        ContractDetailDTO contractDetailDTO = contractMapper.fromEntityToDTO(contractDetail);
+//        contractDetailDTO.setContractId(contract.getId());
+//        contractDetailDTO.setProductId(contractDetail.getProduct().getId());
+
+        List<ContractMainTerm> contractMainTerms = contractMainTermRepository.findByContractDetailId(contractDetail.getId());
+        List<ContractSideTerm> contractSideTerms = contractSideTermRepository.findByContractDetailId(contractDetail.getId());
+
+//        contractDTO.setContractDetailDTO(contractDetailDTO);
+//        contractDTO.setUserId(contract.getUser().getId());
+        contractDetail.setContractMainTerms(contractMainTerms);
+        contractDetail.setContractSideTerms(contractSideTerms);
+        contract.setContractDetail(contractDetail);
+        return contract;
     }
 }

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Data
 public class ContractDTO {
 //    @NotBlank
-    private String userId;
+    private Long userId;
 
     @NotNull
     private LocalDate startDate;

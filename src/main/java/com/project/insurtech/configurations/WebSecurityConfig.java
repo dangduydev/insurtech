@@ -89,6 +89,8 @@ public class WebSecurityConfig {
                                     POST, String.format("%s/contracts", apiPrefix)).hasRole(Role.USER)
                             .requestMatchers(
                                     GET, String.format("%s/contracts/user", apiPrefix)).hasRole(Role.USER)
+                            .requestMatchers(
+                                    GET, String.format("%s/contracts/user/{contractId}", apiPrefix)).hasRole(Role.USER)
 
                             .requestMatchers(
                                     GET, String.format("%s/users/{id}", apiPrefix)).permitAll()

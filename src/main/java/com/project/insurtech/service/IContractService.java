@@ -11,5 +11,7 @@ public interface IContractService {
 
     Contract createContract(ContractDTO contractDTO, Long userId) throws Exception;
 
-    public List<UserGetContractListResponse> getContractsByUserId(Long userId) throws DataNotFoundException;
+    List<UserGetContractListResponse> getContractsByUserId(Long userId) throws DataNotFoundException;
+
+    Contract getContractDetail(Long contractId) throws DataNotFoundException;
 }

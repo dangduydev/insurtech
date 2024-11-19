@@ -35,8 +35,8 @@ public class ContractSideTerm extends BaseEntity {
     private Double price;
 
     @Column(name = "created_by", length = 256)
-    private String createdBy;
+    private Long createdBy;
 
     @Column(name = "modified_by", length = 256)
-    private String modifiedBy;
+    private Long modifiedBy;
 }

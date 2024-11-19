@@ -25,10 +25,8 @@ public class ContractDetail extends BaseEntity {
     @JsonBackReference
     private Contract contract;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    @JsonManagedReference
-    private Product product;
+    @Column(name = "product_id", nullable = false)
+    private Long productId;
 
     @Column(name = "product_name", nullable = false, length = 256)
     private String productName;
@@ -67,10 +65,10 @@ public class ContractDetail extends BaseEntity {
     private String address;
 
     @Column(name = "created_by", length = 256)
-    private String createdBy;
+    private Long createdBy;
 
     @Column(name = "modified_by", length = 256)
-    private String modifiedBy;
+    private Long modifiedBy;
 
     @OneToMany(mappedBy = "contractDetail", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ContractMainTerm> contractMainTerms;

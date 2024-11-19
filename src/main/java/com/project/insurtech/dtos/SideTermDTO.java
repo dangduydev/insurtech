@@ -2,8 +2,10 @@ package com.project.insurtech.dtos;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+import lombok.Getter;
 
 @Data
+@Getter
 public class SideTermDTO {
     private Long id;
     

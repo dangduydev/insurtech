@@ -1,5 +1,7 @@
 package com.project.insurtech.dtos;
 
+import com.project.insurtech.entities.ContractMainTerm;
+import com.project.insurtech.entities.ContractSideTerm;
 import lombok.Data;
 
 import java.time.LocalDate;

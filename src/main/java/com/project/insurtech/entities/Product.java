@@ -93,7 +93,7 @@ public class Product extends BaseEntity {
     @JsonManagedReference
     private List<SideTerm> sideTerms;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    @JsonBackReference
-    private List<ContractDetail> contractDetails;
+//    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+//    @JsonBackReference
+//    private List<ContractDetail> contractDetails;
 }

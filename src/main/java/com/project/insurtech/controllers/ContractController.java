@@ -81,4 +81,29 @@ public class ContractController {
         }
     }
 
+    @GetMapping("/user/{contractId}")
+    public ResponseEntity<ResponseObject> getContractDetail(@PathVariable Long contractId,
+                                                            HttpServletRequest request) {
+        try {
+            Contract contract = contractService.getContractDetail(contractId);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Contract detail retrieved successfully")
+                    .data(contract)
+                    .status(HttpStatus.OK)
+                    .build());
+        } catch (DataNotFoundException e) {
+            logger.error("Data not found: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ResponseObject.builder()
+                    .message("Data not found: " + e.getMessage())
+                    .status(HttpStatus.NOT_FOUND)
+                    .build());
+        } catch (Exception e) {
+            logger.error("Failed to retrieve contract detail: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseObject.builder()
+                    .message("Failed to retrieve contract detail due to server error")
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .build());
+        }
+    }
+
 }
