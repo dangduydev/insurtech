@@ -1,10 +1,13 @@
 package com.project.insurtech.controllers;
 
+import com.project.insurtech.components.helpers.PageHelper;
 import com.project.insurtech.components.helpers.RequestHelper;
 import com.project.insurtech.dtos.ContractDTO;
 import com.project.insurtech.entities.Contract;
 import com.project.insurtech.exceptions.DataNotFoundException;
+import com.project.insurtech.responses.Contract.ContractListResponse;
 import com.project.insurtech.responses.Contract.UserGetContractListResponse;
+import com.project.insurtech.responses.PageResponse;
 import com.project.insurtech.responses.User.ResponseObject;
 import com.project.insurtech.service.Impl.ContractService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +15,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +32,7 @@ public class ContractController {
     private final Logger logger = LoggerFactory.getLogger(ContractController.class);
     private final ContractService contractService;
     private final RequestHelper requestHelper;
+    private final PageHelper pageHelper;
 
     @PostMapping("")
     public ResponseEntity<ResponseObject> createContract(
@@ -81,7 +89,7 @@ public class ContractController {
         }
     }
 
-    @GetMapping("/user/{contractId}")
+    @GetMapping("/{contractId}")
     public ResponseEntity<ResponseObject> getContractDetail(@PathVariable Long contractId,
                                                             HttpServletRequest request) {
         try {
@@ -106,4 +114,37 @@ public class ContractController {
         }
     }
 
+    @GetMapping("/provider")
+    public ResponseEntity<PageResponse<ContractListResponse>> providerGetContractList(
+            @RequestParam(value = "status", required = false) Integer status,
+            @RequestParam(value = "categoryName", required = false) String categoryName,
+            @RequestParam(value = "productName", required = false) String productName,
+            @RequestParam(value = "customerName", required = false) String customerName,
+            @RequestParam(value = "sortBy", required = false, defaultValue = "id") String sortBy,
+            @RequestParam(value = "sortDir", required = false, defaultValue = "desc") String sortDir,
+            Pageable pageable,
+            HttpServletRequest request
+    ) {
+        try {
+            Pageable pageableWithSort = PageRequest.of(
+                    pageable.getPageNumber(),
+                    pageable.getPageSize(),
+                    Sort.by(sortDir.equalsIgnoreCase("desc")
+                            ? Sort.Direction.DESC : Sort.Direction.ASC, sortBy)
+            );
+            Page<ContractListResponse> contracts =
+                    contractService.getContractsByProviderId(
+                            status,
+                            categoryName,
+                            productName,
+                            customerName,
+                            requestHelper.getUserId(request),
+                            pageableWithSort
+                    );
+            PageResponse<ContractListResponse> response = pageHelper.toPagedResponse(contracts);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

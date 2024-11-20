@@ -15,31 +15,15 @@ import org.springframework.util.StringUtils;
 
 public class ProductSpecification {
 
-    public static Specification<Product> withProviderId(Long providerId) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("provider").get("id"), providerId);
-    }
-
-    public static Specification<Product> withProviderIdAndFetchTerms(Long providerId) {
-        return (root, query, criteriaBuilder) -> {
-            // Ensure distinct results for LEFT JOIN FETCH
-            root.fetch("mainTerms", JoinType.LEFT);
-            root.fetch("sideTerms", JoinType.LEFT);
-            query.distinct(true);
-
-            // Add the where clause to filter by provider ID
-            return criteriaBuilder.equal(root.get("provider").get("id"), providerId);
-        };
-    }
-
     public static Specification<Product> userGetProductSpecification(
-            String categoryId,
+            Long categoryId,
             Long providerId,
             String gender
     ) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            if (StringUtils.hasText(categoryId)) {
+            if (categoryId != null) {
                 predicates.add(criteriaBuilder.equal(root.get("category").get("id"), categoryId));
             }
             if (providerId != null) {

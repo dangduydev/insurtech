@@ -87,13 +87,17 @@ public class WebSecurityConfig {
                             //Contract
                             .requestMatchers(
                                     POST, String.format("%s/contracts", apiPrefix)).hasRole(Role.USER)
+                            //User
                             .requestMatchers(
                                     GET, String.format("%s/contracts/user", apiPrefix)).hasRole(Role.USER)
                             .requestMatchers(
-                                    GET, String.format("%s/contracts/user/{contractId}", apiPrefix)).hasRole(Role.USER)
-
+                                    GET, String.format("%s/contracts/{contractId}", apiPrefix)).hasAnyRole(Role.USER, Role.PROVIDER)
                             .requestMatchers(
                                     GET, String.format("%s/users/{id}", apiPrefix)).permitAll()
+
+                            //Web
+                            .requestMatchers(
+                                    GET, String.format("%s/provider/", apiPrefix)).hasRole(Role.PROVIDER)
 
                             .anyRequest().authenticated();
                 });

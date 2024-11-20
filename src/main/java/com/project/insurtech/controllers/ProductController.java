@@ -104,7 +104,7 @@ public class ProductController {
 
     @GetMapping("/list")
     public ResponseEntity<PageResponse<ProductListResponse>> userGetProducts(
-            @RequestParam(value = "categoryId", required = false) String categoryId,
+            @RequestParam(value = "categoryId", required = false) Long categoryId,
             @RequestParam(value = "providerId", required = false) Long providerId,
             @RequestParam(value = "gender", required = false) String gender,
             @RequestParam(value = "sortBy", required = false, defaultValue = "id") String sortBy,

@@ -28,7 +28,7 @@ public interface IProductService {
 
     //Mobile API
     Page<ProductListResponse> getFilteredProducts(
-            String categoryId,
+            Long categoryId,
             Long providerId,
             String gender,
             Pageable pageable);

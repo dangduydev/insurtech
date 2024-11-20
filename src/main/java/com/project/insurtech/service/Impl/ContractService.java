@@ -2,19 +2,20 @@ package com.project.insurtech.service.Impl;
 
 import com.project.insurtech.components.mappers.ContractMapper;
 import com.project.insurtech.dtos.ContractDTO;
-import com.project.insurtech.dtos.ContractDetailDTO;
-import com.project.insurtech.dtos.MainTermDTO;
 import com.project.insurtech.dtos.SideTermDTO;
 import com.project.insurtech.entities.*;
 import com.project.insurtech.enums.ContractStatusEnum;
 import com.project.insurtech.enums.GenderEnum;
 import com.project.insurtech.exceptions.DataNotFoundException;
 import com.project.insurtech.repositories.*;
+import com.project.insurtech.responses.Contract.ContractListResponse;
 import com.project.insurtech.responses.Contract.UserGetContractListResponse;
 import com.project.insurtech.service.IContractService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -155,5 +156,18 @@ public class ContractService implements IContractService {
         contractDetail.setContractSideTerms(contractSideTerms);
         contract.setContractDetail(contractDetail);
         return contract;
+    }
+
+    @Override
+    public Page<ContractListResponse> getContractsByProviderId(
+            Integer status,
+            String categoryName,
+            String productName,
+            String customerName,
+            Long providerId,
+            Pageable pageable
+    ) {
+        return contractRepository.findByProviderWithFilters(
+                providerId, status, categoryName, productName, customerName, pageable);
     }
 }

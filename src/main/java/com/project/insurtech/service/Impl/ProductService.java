@@ -137,7 +137,7 @@ public class ProductService implements IProductService {
 
     @Override
     public Page<ProductListResponse> getFilteredProducts(
-            String categoryId,
+            Long categoryId,
             Long providerId,
             String gender,
             Pageable pageable
