@@ -99,6 +99,10 @@ public class WebSecurityConfig {
                             .requestMatchers(
                                     GET, String.format("%s/provider/", apiPrefix)).hasRole(Role.PROVIDER)
 
+                            //Claims
+                            .requestMatchers(
+                                    POST, String.format("%s/claims/", apiPrefix)).hasRole(Role.USER)
+
                             .anyRequest().authenticated();
                 });
         return http.build();
