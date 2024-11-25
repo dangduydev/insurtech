@@ -16,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ClaimService implements IClaimService {
@@ -55,5 +57,22 @@ public class ClaimService implements IClaimService {
                 .build();
         claim = claimRepository.save(claim);
         return claimMapper.fromEntityToDTO(claim);
+    }
+
+    @Override
+    public List<ClaimDTO> getClaimsByUserId(Long userId) throws DataNotFoundException {
+        logger.info("Getting claims by user id: {}", userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new DataNotFoundException("User not found with id: " + userId));
+        List<Claim> claims = claimRepository.findByCreatedByOrderByCreatedAtDesc(user.getId());
+        return claimMapper.fromEntityToDTO(claims);
+    }
+
+    @Override
+    public List<ClaimDTO> getClaimsByProviderId(Long providerId) throws DataNotFoundException {
+        logger.info("Getting claims by provider id: {}", providerId);
+        List<Claim> claims = claimRepository.findByProviderId(providerId);
+        return claimMapper.fromEntityToDTO(claims);
     }
 }

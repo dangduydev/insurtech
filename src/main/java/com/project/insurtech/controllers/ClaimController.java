@@ -12,10 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -47,6 +44,40 @@ public class ClaimController {
             logger.error("Failed to create claim: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseObject.builder()
                     .message("Failed to create claim due to server error")
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .build());
+        }
+    }
+
+    @GetMapping("user")
+    public ResponseEntity<ResponseObject> getClaimsByUserId(HttpServletRequest request) {
+        try {
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Claims retrieved successfully")
+                    .status(HttpStatus.OK)
+                    .data(claimService.getClaimsByUserId(requestHelper.getUserId(request)))
+                    .build());
+        } catch (Exception e) {
+            logger.error("Failed to get claims: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseObject.builder()
+                    .message("Failed to get claims due to server error")
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .build());
+        }
+    }
+
+    @GetMapping("/provider")
+    public ResponseEntity<ResponseObject> getClaimsByProviderId(HttpServletRequest request) {
+        try {
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Claims retrieved successfully")
+                    .status(HttpStatus.OK)
+                    .data(claimService.getClaimsByProviderId(requestHelper.getUserId(request)))
+                    .build());
+        } catch (Exception e) {
+            logger.error("Failed to get claims: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseObject.builder()
+                    .message("Failed to get claims due to server error")
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .build());
         }
