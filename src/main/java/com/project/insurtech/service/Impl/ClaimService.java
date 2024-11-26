@@ -10,10 +10,13 @@ import com.project.insurtech.exceptions.DataNotFoundException;
 import com.project.insurtech.repositories.IClaimRepository;
 import com.project.insurtech.repositories.IContractRepository;
 import com.project.insurtech.repositories.IUserRepository;
+import com.project.insurtech.responses.ClaimListResponse;
 import com.project.insurtech.service.IClaimService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -70,9 +73,18 @@ public class ClaimService implements IClaimService {
     }
 
     @Override
-    public List<ClaimDTO> getClaimsByProviderId(Long providerId) throws DataNotFoundException {
+    public Page<ClaimListResponse> getClaimsByProviderId(
+            Integer status,
+            String customerName,
+            Long providerId,
+            Pageable pageable
+    ) throws DataNotFoundException {
         logger.info("Getting claims by provider id: {}", providerId);
-        List<Claim> claims = claimRepository.findByProviderId(providerId);
-        return claimMapper.fromEntityToDTO(claims);
+        return claimRepository.findByProviderIdWithFilter(
+                status,
+                customerName,
+                providerId,
+                pageable
+        );
     }
 }
