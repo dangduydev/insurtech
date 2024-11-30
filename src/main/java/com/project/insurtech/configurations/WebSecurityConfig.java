@@ -87,6 +87,9 @@ public class WebSecurityConfig {
                             //Contract
                             .requestMatchers(
                                     POST, String.format("%s/contracts", apiPrefix)).hasRole(Role.USER)
+
+                            .requestMatchers(
+                                    GET, String.format("%s/contracts/provider", apiPrefix)).hasRole(Role.PROVIDER)
                             //User
                             .requestMatchers(
                                     GET, String.format("%s/contracts/user", apiPrefix)).hasRole(Role.USER)
@@ -101,13 +104,13 @@ public class WebSecurityConfig {
 
                             //Claims
                             .requestMatchers(
-                                    POST, String.format("%s/claims/", apiPrefix)).hasRole(Role.USER)
+                                    POST, String.format("%s/claims", apiPrefix)).hasRole(Role.USER)
                             .requestMatchers(
-                                    GET, String.format("%s/claims/user/", apiPrefix)).hasRole(Role.USER)
+                                    GET, String.format("%s/claims/user", apiPrefix)).hasRole(Role.USER)
                             .requestMatchers(
-                                    GET, String.format("%s/claims/provider/", apiPrefix)).hasRole(Role.PROVIDER)
+                                    GET, String.format("%s/claims/provider", apiPrefix)).hasRole(Role.PROVIDER)
                             .requestMatchers(
-                                    GET, String.format("%s/claims/provider/{claimId}/", apiPrefix)).hasRole(Role.PROVIDER)
+                                    GET, String.format("%s/claims/provider/{claimId}", apiPrefix)).hasRole(Role.PROVIDER)
 
                             .anyRequest().authenticated();
                 });
