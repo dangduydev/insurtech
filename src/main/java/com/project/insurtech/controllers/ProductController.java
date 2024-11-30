@@ -1,7 +1,5 @@
 package com.project.insurtech.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.insurtech.components.helpers.PageHelper;
 import com.project.insurtech.components.helpers.RequestHelper;
 import com.project.insurtech.components.helpers.ValidationHelper;
@@ -29,7 +27,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -84,9 +81,11 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id,
+                                                 @RequestBody ProductDTO productDTO,
+                                                 HttpServletRequest request) {
         try {
-            return ResponseEntity.ok(productService.updateProduct(id, productDTO));
+            return ResponseEntity.ok(productService.updateProduct(id, productDTO, requestHelper.getUserId(request)));
         } catch (DataNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

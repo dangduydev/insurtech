@@ -80,10 +80,10 @@ public class Product extends BaseEntity {
     private Boolean isDeleted;
 
     @Column(name = "created_by")
-    private String createdBy;
+    private Long createdBy;
 
     @Column(name = "modified_by")
-    private String modifiedBy;
+    private Long modifiedBy;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @JsonManagedReference

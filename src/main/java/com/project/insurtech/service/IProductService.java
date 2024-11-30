@@ -22,7 +22,7 @@ public interface IProductService {
 
     Product createProduct(Long providerId, ProductDTO productDTO) throws Exception;
 
-    Product updateProduct(Long id, ProductDTO productDTO) throws DataNotFoundException;
+    Product updateProduct(Long id, ProductDTO productDTO, Long userId) throws DataNotFoundException;
 
     void deleteProduct(Long id) throws DataNotFoundException;
 

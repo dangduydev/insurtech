@@ -6,6 +6,7 @@ import com.project.insurtech.entities.MainTerm;
 import com.project.insurtech.entities.SideTerm;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface SideTermMapper {
@@ -14,4 +15,6 @@ public interface SideTermMapper {
 
     @Mapping(target = "productId", source = "product.id")
     SideTermDTO fromEntitiesToDTOs(SideTerm sideTerm);
+
+    void updateEntityFromDto(SideTermDTO sideTermDTO, @MappingTarget SideTerm sideTerm);
 }

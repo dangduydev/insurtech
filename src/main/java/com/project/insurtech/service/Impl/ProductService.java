@@ -6,6 +6,7 @@ import com.project.insurtech.dtos.MainTermDTO;
 import com.project.insurtech.dtos.ProductDTO;
 import com.project.insurtech.dtos.SideTermDTO;
 import com.project.insurtech.entities.*;
+import com.project.insurtech.enums.GenderEnum;
 import com.project.insurtech.enums.IsDeletedEnum;
 import com.project.insurtech.exceptions.DataNotFoundException; // Create this exception class
 import com.project.insurtech.components.mappers.ProductMapper;
@@ -96,6 +97,8 @@ public class ProductService implements IProductService {
                 mainTerm.setIsDeleted(IsDeletedEnum.NOT_DELETED.getValue());
 //                mainTerm.setCreatedAt(LocalDateTime.now());
 //                mainTerm.setModifiedAt(LocalDateTime.now());
+                mainTerm.setCreatedBy(providerId);
+                mainTerm.setModifiedBy(providerId);
                 mainTermRepository.save(mainTerm);
                 logger.info("MainTerm created for product ID: {}", savedProduct.getId());
             }
@@ -108,8 +111,8 @@ public class ProductService implements IProductService {
                 SideTerm sideTerm = sideTermMapper.fromDTOtoEntity(sideTermDTO);
                 sideTerm.setProduct(savedProduct); // Set the Product entity directly
                 sideTerm.setIsDeleted(IsDeletedEnum.NOT_DELETED.getValue());
-//                sideTerm.setCreatedAt(LocalDateTime.now());
-//                sideTerm.setModifiedAt(LocalDateTime.now());
+                sideTerm.setCreatedBy(providerId);
+                sideTerm.setModifiedBy(providerId);
                 sideTermRepository.save(sideTerm);
                 logger.info("SideTerm created for product ID: {}", savedProduct.getId());
             }
@@ -119,15 +122,40 @@ public class ProductService implements IProductService {
 
 
     @Override
-    public Product updateProduct(Long id, ProductDTO productDTO) throws DataNotFoundException {
+    public Product updateProduct(Long id, ProductDTO productDTO, Long userId) throws DataNotFoundException {
         Optional<Product> optionalProduct = productRepository.findById(id);
         Product product = optionalProduct.orElseThrow(() ->
                 new DataNotFoundException("Product not found with id: " + id));
-        productMapper.fromDTOtoEntity(productDTO); // Update using the mapper
         product.setCategory(categoryRepository.findById(productDTO.getCategoryId())
                 .orElseThrow(() ->
                         new DataNotFoundException("Category not found with id: " + productDTO.getCategoryId())));
+        product.setProvider(product.getCategory().getProvider());
+        product.setFromAge(productDTO.getFromAge());
+        product.setToAge(productDTO.getToAge());
+        product.setName(productDTO.getName());
+        product.setDescription(productDTO.getDescription());
+        product.setPrice(productDTO.getPrice());
+        product.setGender(GenderEnum.fromValue(productDTO.getGender()).getValue());
+        product.setApplicableObject(productDTO.getApplicableObject());
+        product.setScope(productDTO.getScope());
+        product.setExclusion(productDTO.getExclusion());
+        product.setHighlight(productDTO.getHighlight());
+        product.setThumbnail(productDTO.getThumbnail());
+        product.setAttachment(productDTO.getAttachment());
+        product.setIsDeleted(IsDeletedEnum.NOT_DELETED.getValue());
         product.setModifiedAt(LocalDateTime.now());
+        product.setModifiedBy(userId);
+        for (MainTermDTO mainTermDTO : productDTO.getMainTerms()) {
+            MainTerm mainTerm = mainTermRepository.findById(mainTermDTO.getId())
+                    .orElseThrow(() -> new DataNotFoundException("MainTerm not found with id: " + mainTermDTO.getId()));
+            mainTermMapper.updateEntityFromDto(mainTermDTO, mainTerm);
+//
+        }
+        for (SideTermDTO sideTermDTO : productDTO.getSideTerms()) {
+            SideTerm sideTerm = sideTermRepository.findById(sideTermDTO.getId())
+                    .orElseThrow(() -> new DataNotFoundException("SideTerm not found with id: " + sideTermDTO.getId()));
+            sideTermMapper.updateEntityFromDto(sideTermDTO, sideTerm);
+        }
         return productRepository.save(product);
     }
 
