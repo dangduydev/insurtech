@@ -2,14 +2,10 @@ package com.project.insurtech.service.Impl;
 
 import com.project.insurtech.components.mappers.ClaimMapper;
 import com.project.insurtech.dtos.ClaimDTO;
-import com.project.insurtech.entities.Claim;
-import com.project.insurtech.entities.Contract;
-import com.project.insurtech.entities.User;
+import com.project.insurtech.entities.*;
 import com.project.insurtech.enums.ClaimStatusEnum;
 import com.project.insurtech.exceptions.DataNotFoundException;
-import com.project.insurtech.repositories.IClaimRepository;
-import com.project.insurtech.repositories.IContractRepository;
-import com.project.insurtech.repositories.IUserRepository;
+import com.project.insurtech.repositories.*;
 import com.project.insurtech.responses.ClaimListResponse;
 import com.project.insurtech.service.IClaimService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +25,8 @@ public class ClaimService implements IClaimService {
     private final IUserRepository userRepository;
     private final IClaimRepository claimRepository;
     private final ClaimMapper claimMapper;
+    private final IContractDetailRepository contractDetailRepository;
+    private final IProductRepository productRepository;
 
 
     @Override
@@ -86,5 +84,26 @@ public class ClaimService implements IClaimService {
                 providerId,
                 pageable
         );
+    }
+
+    @Override
+    public ClaimDTO getClaimDetail(Long claimId, Long userId) throws DataNotFoundException {
+        logger.info("Getting claim detail with claim id: {}", claimId);
+        User provider = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new DataNotFoundException("User not found with id: " + userId));
+        Claim claim = claimRepository.findById(claimId)
+                .orElseThrow(() ->
+                        new DataNotFoundException("Claim not found with id: " + claimId));
+        ContractDetail contractDetail = contractDetailRepository.findByContractId(claim.getContractId())
+                .orElseThrow(() ->
+                        new DataNotFoundException("Contract detail not found with claim id: " + claimId));
+        Product product = productRepository.findById(contractDetail.getProductId())
+                .orElseThrow(() ->
+                        new DataNotFoundException("Product not found with id: " + contractDetail.getProductId()));
+        if (!product.getProvider().getId().equals(provider.getId())) {
+            throw new DataNotFoundException("Claim not found with id: " + claimId);
+        }
+        return claimMapper.fromEntityToDTO(claim);
     }
 }

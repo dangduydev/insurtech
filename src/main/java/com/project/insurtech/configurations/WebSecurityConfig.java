@@ -106,6 +106,8 @@ public class WebSecurityConfig {
                                     GET, String.format("%s/claims/user/", apiPrefix)).hasRole(Role.USER)
                             .requestMatchers(
                                     GET, String.format("%s/claims/provider/", apiPrefix)).hasRole(Role.PROVIDER)
+                            .requestMatchers(
+                                    GET, String.format("%s/claims/provider/{claimId}/", apiPrefix)).hasRole(Role.PROVIDER)
 
                             .anyRequest().authenticated();
                 });

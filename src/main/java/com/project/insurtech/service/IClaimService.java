@@ -20,4 +20,6 @@ public interface IClaimService {
             Long providerId,
             Pageable pageable
     ) throws DataNotFoundException;
+
+    ClaimDTO getClaimDetail(Long claimId, Long userId) throws DataNotFoundException;
 }

@@ -66,7 +66,7 @@ public class ClaimController {
                     .data(claimService.getClaimsByUserId(requestHelper.getUserId(request)))
                     .build());
         } catch (Exception e) {
-            logger.error("Failed to get claims: {}", e.getMessage());
+            logger.error("Failed to get claims");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseObject.builder()
                     .message("Failed to get claims due to server error")
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -123,6 +123,24 @@ public class ClaimController {
             logger.error("Failed to get claims: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseObject.builder()
                     .message("Failed to get claims due to server error")
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .build());
+        }
+    }
+
+    @GetMapping("/provider/{claimId}")
+    public ResponseEntity<ResponseObject> getClaimDetail(@PathVariable Long claimId,
+                                                         HttpServletRequest request) {
+        try {
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Claim detail retrieved successfully")
+                    .status(HttpStatus.OK)
+                    .data(claimService.getClaimDetail(claimId, requestHelper.getUserId(request)))
+                    .build());
+        } catch (Exception e) {
+            logger.error("Failed to retrieve claim detail: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseObject.builder()
+                    .message("Failed to retrieve claim detail due to server error")
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .build());
         }
