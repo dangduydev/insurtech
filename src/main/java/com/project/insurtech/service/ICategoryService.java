@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public interface ICategoryService {
 
-    List<CategoryResponse> getCategories();
+    List<CategoryResponse> getCategories(Long providerId);
 
     Category createCategory(CategoryDTO categoryDTO, Long providerId) throws DataNotFoundException;
 

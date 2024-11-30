@@ -48,7 +48,8 @@ public class ProductService implements IProductService {
 
     @Override
     public List<ProductResponse> getAllProductsByProviderId(Long providerId) {
-        List<Product> products = productRepository.findByProviderId(providerId);
+        List<Product> products =
+                productRepository.findByProviderIdAndAndIsDeleted(providerId, IsDeletedEnum.NOT_DELETED.getValue());
         return products.stream()
                 .map(productMapper::fromEntityToResponse)
                 .collect(Collectors.toList());
@@ -113,7 +114,6 @@ public class ProductService implements IProductService {
                 logger.info("SideTerm created for product ID: {}", savedProduct.getId());
             }
         }
-
         return savedProduct;
     }
 
@@ -121,8 +121,12 @@ public class ProductService implements IProductService {
     @Override
     public Product updateProduct(Long id, ProductDTO productDTO) throws DataNotFoundException {
         Optional<Product> optionalProduct = productRepository.findById(id);
-        Product product = optionalProduct.orElseThrow(() -> new DataNotFoundException("Product not found with id: " + id));
-//        productMapper.updateEntityFromDto(product, productDTO); // Update using the mapper
+        Product product = optionalProduct.orElseThrow(() ->
+                new DataNotFoundException("Product not found with id: " + id));
+        productMapper.fromDTOtoEntity(productDTO); // Update using the mapper
+        product.setCategory(categoryRepository.findById(productDTO.getCategoryId())
+                .orElseThrow(() ->
+                        new DataNotFoundException("Category not found with id: " + productDTO.getCategoryId())));
         product.setModifiedAt(LocalDateTime.now());
         return productRepository.save(product);
     }

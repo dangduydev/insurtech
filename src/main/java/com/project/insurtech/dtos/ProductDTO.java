@@ -9,16 +9,16 @@ import java.util.List;
 @Data
 public class ProductDTO {
     private Long id;
-//    @NotNull(message = "Product's categoryId cannot be empty")
+    //    @NotNull(message = "Product's categoryId cannot be empty")
     private Long categoryId;
 
     private Integer fromAge;
     private Integer toAge;
 
-//    @NotEmpty(message = "Product's status cannot be empty")
+    //    @NotEmpty(message = "Product's status cannot be empty")
     private String status;
 
-//    @NotEmpty(message = "Product's name cannot be empty")
+    //    @NotEmpty(message = "Product's name cannot be empty")
     private String name;
     private String description;
     private String gender;
@@ -30,10 +30,10 @@ public class ProductDTO {
     private String thumbnail;
     private String attachment;
 
-//    @NotEmpty(message = "Product's mainTerms cannot be empty")
+    //    @NotEmpty(message = "Product's mainTerms cannot be empty")
     List<MainTermDTO> mainTerms;
 
-//    @NotEmpty(message = "Product's sideTerms cannot be empty")
+    //    @NotEmpty(message = "Product's sideTerms cannot be empty")
     List<SideTermDTO> sideTerms;
 
 }

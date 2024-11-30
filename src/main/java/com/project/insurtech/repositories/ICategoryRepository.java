@@ -21,4 +21,8 @@ public interface ICategoryRepository extends JpaRepository<Category, Long>, JpaS
 
     // Tìm Category dựa trên trạng thái xóa
     List<Category> findAllByIsDeleted(@Param("isDeleted") Boolean isDeleted);
+
+    // Tìm Category dựa trên providerId và trạng thái xóa
+    List<Category> findAllByProviderIdAndIsDeleted(@Param("providerId") Long providerId,
+                                                   @Param("isDeleted") Boolean isDeleted);
 }

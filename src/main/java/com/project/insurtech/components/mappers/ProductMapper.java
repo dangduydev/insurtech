@@ -16,6 +16,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
     @Mapping(target = "isDeleted", ignore = true)
+    @Mapping(target = "id", ignore = true)
     Product fromDTOtoEntity(ProductDTO productDTO);
 
     ProductDTO fromEntityToDTO(Product product);

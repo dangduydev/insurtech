@@ -12,7 +12,8 @@ import java.util.List;
 public interface IProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 
 
-    List<Product> findByProviderId(Long providerId);
+    List<Product> findByProviderIdAndAndIsDeleted(@Param("providerId") Long providerId,
+                                                  @Param("isDeleted") boolean isDeleted);
 
     @Query("SELECT NEW com.project.insurtech.responses.Provider.ProviderProductResponse(" +
             "p.provider.id, u.fullName, COUNT(p.id)) " +
@@ -22,5 +23,6 @@ public interface IProductRepository extends JpaRepository<Product, Long>, JpaSpe
             "AND u.id IN :providerIds " +
             "GROUP BY p.provider.id, u.fullName")
     List<ProviderProductResponse> countProductsByProviders(@Param("providerIds") List<Long> providerIds);
+
 
 }
