@@ -93,10 +93,13 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<ResponseObject> deleteProduct(@PathVariable Long id) {
         try {
             productService.deleteProduct(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Product deleted successfully")
+                    .status(HttpStatus.OK)
+                    .build());
         } catch (DataNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
