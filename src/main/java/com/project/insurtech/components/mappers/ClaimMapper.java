@@ -9,8 +9,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 @Component
-public interface
-ClaimMapper {
+public interface ClaimMapper {
     ClaimDTO fromEntityToDTO(Claim claim);
 
     List<ClaimDTO> fromEntityToDTO(List<Claim> claims);

@@ -106,4 +106,28 @@ public class ClaimService implements IClaimService {
         }
         return claimMapper.fromEntityToDTO(claim);
     }
+
+    @Override
+    public ClaimDTO updateClaimStatus(Long claimId, Integer status, Long userId) throws DataNotFoundException {
+        logger.info("Updating claim status with claim id: {}", claimId);
+        User provider = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new DataNotFoundException("User not found with id: " + userId));
+        Claim claim = claimRepository.findById(claimId)
+                .orElseThrow(() ->
+                        new DataNotFoundException("Claim not found with id: " + claimId));
+        ContractDetail contractDetail = contractDetailRepository.findByContractId(claim.getContractId())
+                .orElseThrow(() ->
+                        new DataNotFoundException("Contract detail not found with claim id: " + claimId));
+        Product product = productRepository.findById(contractDetail.getProductId())
+                .orElseThrow(() ->
+                        new DataNotFoundException("Product not found with id: " + contractDetail.getProductId()));
+        if (!product.getProvider().getId().equals(provider.getId())) {
+            throw new DataNotFoundException("Claim not found with id: " + claimId);
+        }
+        claim.setStatus(status);
+        claim.setModifiedBy(provider.getId());
+        claim = claimRepository.save(claim);
+        return claimMapper.fromEntityToDTO(claim);
+    }
 }

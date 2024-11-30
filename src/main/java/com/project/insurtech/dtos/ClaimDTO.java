@@ -2,6 +2,8 @@ package com.project.insurtech.dtos;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Data//toString
 @Getter
 @Setter
@@ -24,4 +26,8 @@ public class ClaimDTO {
     private String bankName;
     private String bankBranch;
     private String bankNameOwner;
+    private Long createdBy;
+    private Long modifiedBy;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 }

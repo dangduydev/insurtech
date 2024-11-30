@@ -146,4 +146,33 @@ public class ClaimController {
         }
     }
 
+    @PutMapping("/provider/{claimId}")
+    public ResponseEntity<ResponseObject> updateClaim(@PathVariable Long claimId,
+                                                      @Valid @RequestBody ClaimDTO claimDTO,
+                                                      BindingResult result,
+                                                      HttpServletRequest request) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(ResponseObject.builder()
+                    .message("Validation errors")
+                    .status(HttpStatus.BAD_REQUEST)
+                    .data(result.getAllErrors())
+                    .build());
+        }
+        try {
+            ClaimDTO response =
+                    claimService.updateClaimStatus(claimId, claimDTO.getStatus(), requestHelper.getUserId(request));
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Claim updated successfully")
+                    .status(HttpStatus.OK)
+                    .data(response)
+                    .build());
+        } catch (Exception e) {
+            logger.error("Failed to update claim: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseObject.builder()
+                    .message("Failed to update claim due to server error")
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .build());
+        }
+    }
+
 }

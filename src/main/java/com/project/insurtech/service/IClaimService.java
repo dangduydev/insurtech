@@ -22,4 +22,6 @@ public interface IClaimService {
     ) throws DataNotFoundException;
 
     ClaimDTO getClaimDetail(Long claimId, Long userId) throws DataNotFoundException;
+
+    ClaimDTO updateClaimStatus(Long claimId, Integer status, Long userId) throws DataNotFoundException;
 }
