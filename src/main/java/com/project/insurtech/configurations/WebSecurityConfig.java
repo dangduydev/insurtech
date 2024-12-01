@@ -33,7 +33,9 @@ public class WebSecurityConfig {
                     requests
                             .requestMatchers(
                                     String.format("%s/users/register", apiPrefix),
-                                    String.format("%s/users/login", apiPrefix)
+                                    String.format("%s/users/login", apiPrefix),
+                                    String.format("%s/products/count-by-provider", apiPrefix),
+                                    String.format("%s/products/list", apiPrefix)
                             )
                             .permitAll()
 
@@ -50,7 +52,7 @@ public class WebSecurityConfig {
                                     DELETE, String.format("%s/categories/**", apiPrefix)).hasRole(Role.PROVIDER)
 
                             .requestMatchers(
-                                    GET, String.format("%s/products/", apiPrefix)).permitAll()
+                                    GET, String.format("%s/products", apiPrefix)).permitAll()
                             .requestMatchers(
                                     POST, String.format("%s/products/**", apiPrefix)).hasRole(Role.PROVIDER)
                             .requestMatchers(
@@ -60,11 +62,7 @@ public class WebSecurityConfig {
 
                             //API mobile
                             .requestMatchers(
-                                    GET, String.format("%s/products/list", apiPrefix)).hasRole(Role.USER)
-                            .requestMatchers(
                                     GET, String.format("%s/products/{id}", apiPrefix)).hasRole(Role.USER)
-                            .requestMatchers(
-                                    GET, String.format("%s/products/count-by-provider", apiPrefix)).permitAll()
 
                             .requestMatchers(
                                     POST, String.format("%s/admin/**", apiPrefix)).hasRole(Role.ADMIN)
