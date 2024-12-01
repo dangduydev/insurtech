@@ -32,7 +32,7 @@ spring:
     max-request-size: 10MB    # Giới hạn kích thước toàn bộ yêu cầu (bao gồm cả các tệp)
 
 jwt:
-  expiration: 345600 # 1 day
+  expiration: 604800 # 1 day
   secretKey: KYbIMbDQ2deGncAVp4nyxlr8eJxqDwaQzWE+HXHoHvk=
 
 minio:
