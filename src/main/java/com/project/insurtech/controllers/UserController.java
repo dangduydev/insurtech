@@ -8,6 +8,7 @@ import com.project.insurtech.responses.User.RegisterResponse;
 import com.project.insurtech.responses.User.ResponseObject;
 import com.project.insurtech.responses.User.UserDetailResponse;
 import com.project.insurtech.service.Impl.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -90,6 +91,34 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ResponseObject.builder()
                     .message("Failed to retrieve user details")
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .build());
+        }
+    }
+
+    @PutMapping("")
+    public ResponseEntity<ResponseObject> updateUser(
+            @Valid @RequestBody UserDTO userDTO,
+            BindingResult result,
+            HttpServletRequest request
+    ) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(ResponseObject.builder()
+                    .message("Validation errors")
+                    .status(HttpStatus.BAD_REQUEST)
+                    .data(result.getAllErrors())
+                    .build());
+        }
+        try {
+            User user = userService.updateUser(requestHelper.getUserId(request), userDTO);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("User updated successfully")
+                    .status(HttpStatus.OK)
+                    .data(user)
+                    .build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ResponseObject.builder()
+                    .message("Failed to update user")
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .build());
         }

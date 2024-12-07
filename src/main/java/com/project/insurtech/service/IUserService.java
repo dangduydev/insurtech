@@ -13,4 +13,6 @@ public interface IUserService {
     User createProvider(ProviderDTO providerDTO) throws Exception;
 
     UserDetailResponse getUserDetail(Long id) throws Exception;
+
+    User updateUser(Long id, UserDTO userDTO) throws Exception;
 }

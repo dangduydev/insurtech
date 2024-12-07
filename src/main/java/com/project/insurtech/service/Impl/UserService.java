@@ -153,6 +153,35 @@ public class UserService implements IUserService {
                 .build();
     }
 
+    @Override
+    public User updateUser(Long id, UserDTO userDTO) throws Exception {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
+
+        //check if phone number already exists
+        if (userRepository.existsByPhoneNumber(userDTO.getPhoneNumber()) &&
+                !user.getPhoneNumber().equals(userDTO.getPhoneNumber())) {
+            throw new DataNotFoundException("Phone number already exists");
+        }
+
+        //check if email already exists
+        if (userRepository.existsByEmail(userDTO.getEmail()) &&
+                !user.getEmail().equals(userDTO.getEmail())) {
+            throw new DataNotFoundException("Email already exists");
+        }
+
+        //convert from userDTO => user
+        user.setFullName(userDTO.getFullName());
+        user.setPhoneNumber(userDTO.getPhoneNumber());
+        user.setAddress(userDTO.getAddress());
+        user.setEmail(userDTO.getEmail());
+        user.setDateOfBirth(userDTO.getDateOfBirth());
+        if (userDTO.getPassword() != null && userDTO.getPassword().equals(userDTO.getRetypePassword())) {
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        }
+        return userRepository.save(user);
+    }
+
     private String generateRandomPassword() {
         int length = 10;
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
