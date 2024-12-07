@@ -44,7 +44,10 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (Exception e) {
             logger.error("Error creating user: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(RegisterResponse.builder()
+                            .message("Failed to create user cause by: " + e.getMessage())
+                            .build());
         }
     }
 }
