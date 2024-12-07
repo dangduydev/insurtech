@@ -22,4 +22,12 @@ public class ProviderDTO {
 
     private String address;
 
+    @JsonProperty("password")
+    @NotEmpty(message = "Provider's password cannot be empty")
+    private String password;
+
+    @JsonProperty("retype_password")
+    @NotEmpty(message = "Provider's retype password cannot be empty")
+    private String retypePassword;
+
 }

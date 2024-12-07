@@ -23,6 +23,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class UserService implements IUserService {
@@ -111,7 +113,6 @@ public class UserService implements IUserService {
             throw new DataNotFoundException("Email already exists");
         }
 
-
         //convert from providerDTO => user
         User newUser = User.builder()
                 .fullName(providerDTO.getFullName())
@@ -123,9 +124,10 @@ public class UserService implements IUserService {
                 .orElseThrow(() -> new DataNotFoundException("Role not found")));
 
         //encrypt password
-//        newUser.setPassword(passwordEncoder.encode(generateRandomPassword()));
-        //Todo: remove this line and uncomment the above line
-        newUser.setPassword(passwordEncoder.encode("123456"));
+        if (!Objects.equals(providerDTO.getPassword(), providerDTO.getRetypePassword())) {
+            throw new DataNotFoundException("Password and retype password are not the same");
+        }
+        newUser.setPassword(passwordEncoder.encode(providerDTO.getPassword()));
         // Save the User entity first to generate the ID
         User savedUser = userRepository.save(newUser);
 
