@@ -3,6 +3,7 @@ package com.project.insurtech.repositories;
 import com.project.insurtech.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,17 +17,10 @@ public interface IUserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u " +
             "FROM User u " +
-            "WHERE u.role.id = 3 " +
+            "WHERE u.role.id = :roleId " +
             "AND u.isDeleted = 0 " +
-            "AND u.status = 1 " +
+            "AND u.status = :status " +
             "ORDER BY u.id DESC")
-    List<User> findAllProviders();
+    List<User> findAllUserByRoleIdAndStatus(@Param("roleId") long roleId, @Param("status") int status);
 
-    @Query("SELECT u " +
-            "FROM User u " +
-            "WHERE u.role.id = 2 " +
-            "AND u.isDeleted = 0 " +
-            "AND u.status = 1 " +
-            "ORDER BY u.id DESC")
-    List<User> findAllUsers();
 }

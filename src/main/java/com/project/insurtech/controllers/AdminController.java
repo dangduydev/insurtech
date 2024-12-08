@@ -82,4 +82,21 @@ public class AdminController {
                             .build());
         }
     }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<ResponseObject> getProviderDetail(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .data(userService.getUserDetail(id))
+                    .message("User detail retrieved successfully")
+                    .status(HttpStatus.OK)
+                    .build());
+        } catch (Exception e) {
+            logger.error("Error getting provider detail: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResponseObject.builder()
+                            .message("Failed to get provider detail cause by: " + e.getMessage())
+                            .build());
+        }
+    }
 }

@@ -8,6 +8,8 @@ import com.project.insurtech.dtos.SideTermDTO;
 import com.project.insurtech.entities.*;
 import com.project.insurtech.enums.GenderEnum;
 import com.project.insurtech.enums.IsDeletedEnum;
+import com.project.insurtech.enums.RoleEnum;
+import com.project.insurtech.enums.UserStatusEnum;
 import com.project.insurtech.exceptions.DataNotFoundException; // Create this exception class
 import com.project.insurtech.components.mappers.ProductMapper;
 import com.project.insurtech.repositories.*;
@@ -181,7 +183,8 @@ public class ProductService implements IProductService {
 
     @Override
     public List<ProviderProductResponse> getProductCountByProvider() {
-        List<User> providers = userRepository.findAllProviders();
+        List<User> providers =
+                userRepository.findAllUserByRoleIdAndStatus(RoleEnum.PROVIDER.getValue(), UserStatusEnum.ACTIVE.getValue());
         if (providers.isEmpty()) {
             return Collections.emptyList();
         }

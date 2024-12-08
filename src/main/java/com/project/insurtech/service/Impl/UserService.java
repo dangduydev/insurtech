@@ -8,6 +8,7 @@ import com.project.insurtech.entities.Provider;
 import com.project.insurtech.entities.Role;
 import com.project.insurtech.entities.User;
 import com.project.insurtech.enums.RoleEnum;
+import com.project.insurtech.enums.UserStatusEnum;
 import com.project.insurtech.exceptions.DataNotFoundException;
 import com.project.insurtech.repositories.IProviderRepository;
 import com.project.insurtech.repositories.IRoleRepository;
@@ -123,6 +124,7 @@ public class UserService implements IUserService {
                 .phoneNumber(providerDTO.getPhoneNumber())
                 .address(providerDTO.getAddress())
                 .email(providerDTO.getEmail())
+                .status(1)
                 .build();
         newUser.setRole(roleRepository.findById(RoleEnum.PROVIDER.getValue().longValue())
                 .orElseThrow(() -> new DataNotFoundException("Role not found")));
@@ -190,7 +192,8 @@ public class UserService implements IUserService {
 
     @Override
     public List<UserDTO> getAllProviders() throws Exception {
-        List<User> providers = userRepository.findAllProviders();
+        List<User> providers =
+                userRepository.findAllUserByRoleIdAndStatus(RoleEnum.PROVIDER.getValue(), UserStatusEnum.ACTIVE.getValue());
         return providers.stream()
                 .map(userMapper::fromEntityToDTO)
                 .collect(Collectors.toList());
@@ -198,7 +201,7 @@ public class UserService implements IUserService {
 
     @Override
     public List<UserDTO> getAllUsers() throws Exception {
-        List<User> users = userRepository.findAllUsers();
+        List<User> users = userRepository.findAllUserByRoleIdAndStatus(RoleEnum.USER.getValue(), UserStatusEnum.ACTIVE.getValue());
         return users.stream()
                 .map(userMapper::fromEntityToDTO)
                 .collect(Collectors.toList());
