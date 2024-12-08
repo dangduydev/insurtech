@@ -21,4 +21,12 @@ public interface IUserRepository extends JpaRepository<User, Long> {
             "AND u.status = 1 " +
             "ORDER BY u.id DESC")
     List<User> findAllProviders();
+
+    @Query("SELECT u " +
+            "FROM User u " +
+            "WHERE u.role.id = 2 " +
+            "AND u.isDeleted = 0 " +
+            "AND u.status = 1 " +
+            "ORDER BY u.id DESC")
+    List<User> findAllUsers();
 }

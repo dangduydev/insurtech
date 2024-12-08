@@ -65,4 +65,21 @@ public class AdminController {
                             .build());
         }
     }
+
+    @GetMapping("/user")
+    public ResponseEntity<ResponseObject> getUsers() {
+        try {
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .data(userService.getAllUsers())
+                    .message("Users retrieved successfully")
+                    .status(HttpStatus.OK)
+                    .build());
+        } catch (Exception e) {
+            logger.error("Error getting users: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResponseObject.builder()
+                            .message("Failed to get users cause by: " + e.getMessage())
+                            .build());
+        }
+    }
 }

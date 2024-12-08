@@ -19,4 +19,6 @@ public interface IUserService {
     User updateUser(Long id, UserDTO userDTO) throws Exception;
 
     List<UserDTO> getAllProviders() throws Exception;
+
+    List<UserDTO> getAllUsers() throws Exception;
 }

@@ -196,6 +196,14 @@ public class UserService implements IUserService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<UserDTO> getAllUsers() throws Exception {
+        List<User> users = userRepository.findAllUsers();
+        return users.stream()
+                .map(userMapper::fromEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
     private String generateRandomPassword() {
         int length = 10;
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
