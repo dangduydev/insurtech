@@ -2,6 +2,8 @@ package com.project.insurtech.repositories;
 
 import com.project.insurtech.entities.Product;
 import com.project.insurtech.responses.Provider.ProviderProductResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -23,6 +25,9 @@ public interface IProductRepository extends JpaRepository<Product, Long>, JpaSpe
             "AND u.id IN :providerIds " +
             "GROUP BY p.provider.id, u.fullName")
     List<ProviderProductResponse> countProductsByProviders(@Param("providerIds") List<Long> providerIds);
+
+    @Query("SELECT p FROM Product p WHERE p.provider.id IN :providerId AND p.isDeleted = false AND p.name LIKE %:productName%")
+    Page<Product> findAllByProviderIdAndIsDeleted(List<Long> providerId, String productName, Pageable pageable);
 
 
 }

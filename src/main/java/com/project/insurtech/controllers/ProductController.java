@@ -106,9 +106,8 @@ public class ProductController {
 
     @GetMapping("/list")
     public ResponseEntity<PageResponse<ProductListResponse>> userGetProducts(
-            @RequestParam(value = "categoryId", required = false) Long categoryId,
-            @RequestParam(value = "providerId", required = false) Long providerId,
-            @RequestParam(value = "gender", required = false) String gender,
+            @RequestParam(value = "providerId", required = false) List<Long> providerId,
+            @RequestParam(value = "productName", required = false) String productName,
             @RequestParam(value = "sortBy", required = false, defaultValue = "id") String sortBy,
             @RequestParam(value = "sortDir", required = false, defaultValue = "asc") String sortDir,
             Pageable pageable
@@ -119,7 +118,7 @@ public class ProductController {
                     pageable.getPageSize(),
                     Sort.by(sortDir.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC, sortBy)
             );
-            Page<ProductListResponse> productResponses = productService.getFilteredProducts(categoryId, providerId, gender, pageableWithSort);
+            Page<ProductListResponse> productResponses = productService.getFilteredProducts(providerId, productName, pageableWithSort);
             PageResponse<ProductListResponse> response = pageHelper.toPagedResponse(productResponses);
             return ResponseEntity.ok(response);
         } catch (Exception e) {

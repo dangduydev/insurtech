@@ -171,14 +171,18 @@ public class ProductService implements IProductService {
 
     @Override
     public Page<ProductListResponse> getFilteredProducts(
-            Long categoryId,
-            Long providerId,
-            String gender,
+            List<Long> providerId,
+            String productName,
             Pageable pageable
     ) {
-        return productRepository
-                .findAll(ProductSpecification.userGetProductSpecification(categoryId, providerId, gender), pageable)
-                .map(productMapper::fromEntityToProductListResponse);
+//        return productRepository
+//                .findAll(ProductSpecification.userGetProductSpecification(categoryId, providerId, gender), pageable)
+//                .map(productMapper::fromEntityToProductListResponse);
+        return productRepository.findAllByProviderIdAndIsDeleted(
+                providerId,
+                productName,
+                pageable
+        ).map(productMapper::fromEntityToProductListResponse);
     }
 
     @Override

@@ -28,9 +28,8 @@ public interface IProductService {
 
     //Mobile API
     Page<ProductListResponse> getFilteredProducts(
-            Long categoryId,
-            Long providerId,
-            String gender,
+            List<Long> providerId,
+            String productName,
             Pageable pageable);
 
     List<ProviderProductResponse> getProductCountByProvider();
