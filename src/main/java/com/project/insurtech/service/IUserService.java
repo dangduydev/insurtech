@@ -5,6 +5,8 @@ import com.project.insurtech.dtos.UserDTO;
 import com.project.insurtech.entities.User;
 import com.project.insurtech.responses.User.UserDetailResponse;
 
+import java.util.List;
+
 public interface IUserService {
     User createUser(UserDTO userDTO) throws Exception;
 
@@ -15,4 +17,6 @@ public interface IUserService {
     UserDetailResponse getUserDetail(Long id) throws Exception;
 
     User updateUser(Long id, UserDTO userDTO) throws Exception;
+
+    List<UserDTO> getAllProviders() throws Exception;
 }

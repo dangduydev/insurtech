@@ -2,6 +2,7 @@ package com.project.insurtech.controllers;
 
 import com.project.insurtech.dtos.ProviderDTO;
 import com.project.insurtech.responses.User.RegisterResponse;
+import com.project.insurtech.responses.User.ResponseObject;
 import com.project.insurtech.service.Impl.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -47,6 +45,22 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(RegisterResponse.builder()
                             .message("Failed to create user cause by: " + e.getMessage())
+                            .build());
+        }
+    }
+
+    @GetMapping("/provider")
+    public ResponseEntity<ResponseObject> getProviders() {
+        try {
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .data(userService.getAllProviders())
+                    .message("Providers retrieved successfully")
+                    .build());
+        } catch (Exception e) {
+            logger.error("Error getting providers: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResponseObject.builder()
+                            .message("Failed to get providers cause by: " + e.getMessage())
                             .build());
         }
     }

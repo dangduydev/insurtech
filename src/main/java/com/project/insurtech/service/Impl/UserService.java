@@ -1,6 +1,7 @@
 package com.project.insurtech.service.Impl;
 
 import com.project.insurtech.components.JwtTokenUtil;
+import com.project.insurtech.components.mappers.UserMapper;
 import com.project.insurtech.dtos.ProviderDTO;
 import com.project.insurtech.dtos.UserDTO;
 import com.project.insurtech.entities.Provider;
@@ -23,7 +24,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +38,7 @@ public class UserService implements IUserService {
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager auth;
     private final IProviderRepository providerRepository;
+    private final UserMapper userMapper;
 
     @Override
     @Transactional
@@ -182,6 +186,14 @@ public class UserService implements IUserService {
             user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         }
         return userRepository.save(user);
+    }
+
+    @Override
+    public List<UserDTO> getAllProviders() throws Exception {
+        List<User> providers = userRepository.findAllProviders();
+        return providers.stream()
+                .map(userMapper::fromEntityToDTO)
+                .collect(Collectors.toList());
     }
 
     private String generateRandomPassword() {
