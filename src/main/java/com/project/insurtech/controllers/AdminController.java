@@ -55,6 +55,7 @@ public class AdminController {
             return ResponseEntity.ok(ResponseObject.builder()
                     .data(userService.getAllProviders())
                     .message("Providers retrieved successfully")
+                    .status(HttpStatus.OK)
                     .build());
         } catch (Exception e) {
             logger.error("Error getting providers: {}", e.getMessage());
