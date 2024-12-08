@@ -26,8 +26,16 @@ public interface IProductRepository extends JpaRepository<Product, Long>, JpaSpe
             "GROUP BY p.provider.id, u.fullName")
     List<ProviderProductResponse> countProductsByProviders(@Param("providerIds") List<Long> providerIds);
 
-    @Query("SELECT p FROM Product p WHERE p.provider.id IN :providerId AND p.isDeleted = false AND p.name LIKE %:productName%")
-    Page<Product> findAllByProviderIdAndIsDeleted(List<Long> providerId, String productName, Pageable pageable);
+    @Query("SELECT p FROM Product p " +
+            "WHERE (:providerId IS NULL OR p.provider.id IN :providerId) " +
+            "AND (:productName IS NULL OR p.name LIKE %:productName%) " +
+            "AND p.isDeleted = false")
+    Page<Product> findAllByProviderIdAndIsDeleted(
+            @Param("providerId") List<Long> providerId,
+            @Param("productName") String productName,
+            Pageable pageable
+    );
+
 
 
 }
