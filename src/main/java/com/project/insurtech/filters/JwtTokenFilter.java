@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,6 +27,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
+    private final Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
     @Value("${api.prefix}")
     private String apiPrefix;
     private final UserDetailsService userDetailsService;
@@ -37,6 +40,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                                     @NotNull FilterChain filterChain
     ) throws ServletException, IOException {
         try {
+            // Log Request
+            logRequest(request);
+
             if (isBypassToken(request)) {
                 filterChain.doFilter(request, response);
                 return;
@@ -62,10 +68,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             logger.error("Error filtering request");
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
         }
-        if (isBypassToken(request)) {
-            filterChain.doFilter(request, response);
-        }
-
     }
 
     private boolean isBypassToken(HttpServletRequest request) {
@@ -80,4 +82,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
         return false;
     }
+
+    private void logRequest(HttpServletRequest request) {
+        logger.info("Start handle request URL: {}, Method: {}", request.getRequestURL(), request.getMethod());
+    }
+
 }
