@@ -118,6 +118,7 @@ public class ContractService implements IContractService {
                         .name(sideTerm.getName())
                         .description(sideTerm.getDescription())
                         .amount(sideTerm.getAmount())
+                        .price(sideTerm.getPrice())
                         .createdBy(userId)
                         .modifiedBy(userId)
                         .build();
