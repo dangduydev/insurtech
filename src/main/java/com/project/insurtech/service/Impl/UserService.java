@@ -69,6 +69,7 @@ public class UserService implements IUserService {
                 .address(userDTO.getAddress())
                 .dateOfBirth(userDTO.getDateOfBirth())
                 .email(userDTO.getEmail())
+                .status(UserStatusEnum.ACTIVE.getValue())
                 .build();
         newUser.setRole(role);
 
