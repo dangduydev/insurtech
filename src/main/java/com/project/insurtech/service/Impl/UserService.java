@@ -138,13 +138,13 @@ public class UserService implements IUserService {
         // Save the User entity first to generate the ID
         User savedUser = userRepository.save(newUser);
 
-        // Create and associate the Provider entity with the saved User
-        Provider provider = Provider.builder()
-                .name(providerDTO.getFullName())
-                .description(providerDTO.getDescription())
-                .user(savedUser) // Set the saved User
-                .build();
-        providerRepository.save(provider);
+//        // Create and associate the Provider entity with the saved User
+//        Provider provider = Provider.builder()
+//                .name(providerDTO.getFullName())
+//                .description(providerDTO.getDescription())
+//                .user(savedUser) // Set the saved User
+//                .build();
+//        providerRepository.save(provider);
         return savedUser;
     }
 
